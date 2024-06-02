@@ -1,0 +1,18 @@
+<ion-header [translucent]="true"></ion-header>
+<ion-content [fullscreen]="true">
+  <div id="container" *ngIf="!showIframe && !errorMessage">
+    <ion-spinner *ngIf="isLoading"></ion-spinner>
+    <img src="assets/quicke.png" class="image-overlay" *ngIf="isLoaded && !showIframe && !errorMessage" (click)="showChat()" style="box-shadow: 0px 2px 5px black;">
+    <ion-button *ngIf="isLoaded && !showIframe && !errorMessage" (click)="showChat()">Chat with QuickE</ion-button>
+
+    <ion-text *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+  </div>
+  <div class="iframe-container" *ngIf="showIframe && !errorMessage">
+    <iframe
+      title="QuickHelp"
+      allow="encrypted-media; allow-same-origin; allow-scripts"
+      src="https://quickhelp.com.ng/chat.php"
+      style="width: 100%; height: 100%;"
+    ></iframe>
+  </div>
+</ion-content>

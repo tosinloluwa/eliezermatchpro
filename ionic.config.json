@@ -1,0 +1,7 @@
+{
+  "name": "QuickHelp_Nigeria",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
