@@ -17,12 +17,20 @@
   <app-root></app-root>
   <script src="cordova.js"></script>
   <script>
-    document.addEventListener('deviceready', function() {
-      navigator.splashscreen.show();
-      setTimeout(function() {
-        navigator.splashscreen.hide();
-      }, 3000);  // Hide splash screen after 3 seconds
-    }, false);
+    document.addEventListener('deviceready', onDeviceReady, false);
+
+    function onDeviceReady() {
+      // Cordova is now fully loaded
+      console.log('Device is ready');
+
+      // Your app initialization code here
+      // For example, initialize plugins, set up event listeners, etc.
+
+      // Hide splashscreen when your app is fully loaded and ready
+      // You might want to move this to your app's main component or service
+      // if you have more complex initialization logic
+      navigator.splashscreen.hide();
+    }
   </script>
 </body>
 </html>
