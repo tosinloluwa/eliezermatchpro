@@ -14,7 +14,6 @@
     <platform name="android">
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splashscreen.svg" />
         <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#FFFFFF" />
-        
         <preference name="ScrollEnabled" value="false" />
         <preference name="BackupWebStorage" value="local" />
         <preference name="loadUrlTimeoutValue" value="60000" />
