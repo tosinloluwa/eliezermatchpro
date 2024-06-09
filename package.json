@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^17.0.2",
     "@angular/platform-browser-dynamic": "^17.0.2",
     "@angular/router": "^17.0.2",
+    "@awesome-cordova-plugins/dialogs": "^6.7.0",
     "@awesome-cordova-plugins/splash-screen": "^6.7.0",
     "@ionic/angular": "^7.5.0",
     "@ionic/cordova-builders": "^11.0.0",
@@ -45,6 +46,7 @@
     "@typescript-eslint/parser": "^6.0.0",
     "cordova-android": "^13.0.0",
     "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-splashscreen": "^6.0.1",
@@ -71,7 +73,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-splashscreen": {}
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-dialogs": {}
     },
     "platforms": [
       "android"

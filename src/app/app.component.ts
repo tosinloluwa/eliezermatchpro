@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { Dialogs } from '@awesome-cordova-plugins/dialogs/ngx';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
   imports: [IonApp, IonRouterOutlet],
-  providers: [SplashScreen]
+  providers: [SplashScreen, Dialogs]
 })
 export class AppComponent {
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen
+    private splashScreen: SplashScreen,
+    private dialogs: Dialogs
   ) {
     this.initializeApp();
   }
@@ -20,6 +22,9 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(async () => {
       console.log('Platform ready');
+
+      // Listen for quit message from iframe
+      window.addEventListener('message', this.handleIframeMessage.bind(this), false);
 
       try {
         // Perform any asynchronous initialization tasks here
@@ -55,5 +60,21 @@ export class AppComponent {
   // Helper function to simulate async tasks
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Handle messages from the iframe
+  private handleIframeMessage(event: MessageEvent) {
+    if (event.data === 'quitApp') {
+      this.quitApp();
+    }
+  }
+
+  // Quit the app
+  private quitApp() {
+    if (this.platform.is('cordova')) {
+      (navigator as any).app.exitApp();
+    } else {
+      console.log('Quit function is only available on device.');
+    }
   }
 }
