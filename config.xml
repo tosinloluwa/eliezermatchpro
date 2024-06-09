@@ -12,8 +12,9 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splashscreen.svg" />
-        <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#FFFFFF" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splash.png" />
+        <preference name="AndroidWindowSplashScreenBackgroundColor" value="#FFFFFF" />
+        <preference name="AndroidWindowSplashScreenDuration" value="3000" />
         <preference name="ScrollEnabled" value="false" />
         <preference name="BackupWebStorage" value="local" />
         <preference name="loadUrlTimeoutValue" value="60000" />
