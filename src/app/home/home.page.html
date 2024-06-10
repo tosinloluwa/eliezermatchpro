@@ -1,29 +1,18 @@
 <ion-header [translucent]="true"></ion-header>
 <ion-content [fullscreen]="true">
-  <div id="container" *ngIf="isLoading; else loadedContent">
-    <ion-spinner></ion-spinner>
-    <ion-button>Loading..</ion-button>
-  </div>
-  
-  <ng-template #loadedContent>
-    <div *ngIf="errorMessage; else showIframeContent">
-      <ion-text color="danger">{{ errorMessage }}</ion-text>
-    </div>
-    
-    <ng-template #showIframeContent>
-      <div class="iframe-container">
-        <iframe
-          *ngIf="showIframe"
-          title="QuickHelp"
-          allow="encrypted-media; allow-same-origin; allow-scripts"
-          src="https://quickhelp.com.ng/chat.php"
-          style="width: 100%; height: 100%;"
-        ></iframe>
-      </div>
-    </ng-template>
-  </ng-template>
 
-  <div id="offlineMessage" class="offline-message" *ngIf="!isOnline" >
-    <ion-button>No internet connection</ion-button>
+  <div id="container" *ngIf="!showIframe && !errorMessage">
+   <ion-spinner *ngIf="isLoading"></ion-spinner>   
+    
+    <ion-button >Loading..</ion-button>
+    <ion-text *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+  </div>
+  <div class="iframe-container" >
+    <iframe
+      title="QuickHelp"
+      allow="encrypted-media; allow-same-origin; allow-scripts"
+      src="https://quickhelp.com.ng/chat.php"
+      style="width: 100%; height: 100%;"
+    ></iframe>
   </div>
 </ion-content>
