@@ -1,15 +1,16 @@
 {
-  "name": "quickhelp_nigeria",
-  "version": "0.0.1",
-  "author": "The QuickHelp Nigeria Team",
-  "homepage": "https://quickhelp.com.ng.com/",
+  "name": "eliezermatchpro",
+  "version": "1.0.0",
+  "author": "EliezerMatchPro Team",
+  "homepage": "https://eliezermatchpro.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "generate-assets": "cordova-res android --skip-config --copy && cordova-res ios --skip-config --copy"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser": "^17.0.2",
     "@angular/platform-browser-dynamic": "^17.0.2",
     "@angular/router": "^17.0.2",
+    "@awesome-cordova-plugins/camera": "^6.7.0",
     "@awesome-cordova-plugins/dialogs": "^6.7.0",
     "@awesome-cordova-plugins/splash-screen": "^6.7.0",
     "@ionic/angular": "^7.5.0",
@@ -46,11 +48,12 @@
     "@typescript-eslint/parser": "^6.0.0",
     "cordova-android": "^13.0.0",
     "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-dialogs": "^2.0.2",
-    "cordova-plugin-ionic-keyboard": "^2.0.5",
-    "cordova-plugin-ionic-webview": "^5.0.0",
-    "cordova-plugin-splashscreen": "^6.0.1",
-    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-dialogs": "2.0.2",
+    "cordova-plugin-ionic-keyboard": "2.0.5",
+    "cordova-plugin-ionic-webview": "5.0.0",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-camera": "6.0.0",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -63,10 +66,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "nx": "^19.2.2",
-    "quickhelp_nigeria": "file:android",
     "typescript": "~5.2.2"
   },
-  "description": "An Ionic project",
+  "description": "A matchmaking app to connect users with their perfect match",
   "cordova": {
     "plugins": {
       "cordova-plugin-statusbar": {},
@@ -74,13 +76,20 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-dialogs": {}
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   },
-  "main": "karma.conf.js",
-  "keywords": [],
-  "license": "ISC"
+  "main": "src/main.ts",
+  "keywords": [
+    "matchmaking",
+    "dating",
+    "ionic",
+    "angular"
+  ],
+  "license": "MIT"
 }
