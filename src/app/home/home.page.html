@@ -1,19 +1,52 @@
-<ion-header [translucent]="true"></ion-header>
-<ion-content [fullscreen]="true">
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button (click)="goToPage('home')">Home</ion-item>
+      <ion-item button (click)="goToPage('about')">About</ion-item>
+      <ion-item button (click)="goToPage('how-it-works')">How It Works</ion-item>
+      <ion-item button (click)="goToPage('testimonials')">Testimonials</ion-item>
+      <ion-item button (click)="goToPage('login')">Login</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
-  <div id="container" *ngIf="!showIframe && !errorMessage">
-   <ion-spinner *ngIf="isLoading"></ion-spinner>   
+<ion-content [fullscreen]="true" id="main-content">
+  <div class="main-container">
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="assets/images/eliezer-logo.png" alt="EliezerMatch Logo" class="logo" />
+      </div>
+      <ion-menu-button class="hamburger-button"></ion-menu-button>
+    </div>
     
-    <ion-button >Loading..</ion-button>
-    <ion-text *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+    <div class="content-section">
+      <p class="description">
+        At EliezerMatch, we aim to foster meaningful connections between believers, helping them find life-long partners.
+      </p>
+    </div>
+    
+    <div class="image-container">
+      <img src="assets/images/couple-illustration.png" alt="Couple Illustration" class="couple-image" />
+    </div>
+    
+    <div class="buttons-container">
+      <ion-button expand="block" class="signup-button" (click)="goToSignUp()">SIGN UP</ion-button>
+      <ion-button expand="block" class="login-button" (click)="goToLogin()">LOGIN</ion-button>
+    </div>
+    
+    <div class="more-info">
+      <ion-button class="learn-more-button" (click)="goToLearnMore()">LEARN MORE</ion-button>
+    </div>
   </div>
-  <div class="iframe-container" >
-    <iframe
-      title="QuickHelp"
-      allow="encrypted-media; allow-same-origin; allow-scripts"
-      src="https://quickhelp.com.ng/chat.php"
-      style="width: 100%; height: 100%;"
-    ></iframe>
-    <div class="camo">QuickHelp</div>
-  </div>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="call-button">
+      <ion-icon name="call-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

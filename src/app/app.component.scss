@@ -1,0 +1,54 @@
+ion-menu {
+    --background: transparent;
+  
+    ion-header {
+      ion-toolbar {
+        --background: rgba(0, 0, 0, 0.8);
+        --color: #ffffff;
+  
+        ion-title {
+          color: #ffffff;
+          font-weight: 600;
+          font-size: 1.2rem;
+        }
+      }
+    }
+  
+    ion-content {
+      --background: transparent;
+      --color: #ffffff;
+  
+      &::part(scroll) {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/assets/images/back.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+  
+      ion-list {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        margin: 15px;
+        padding: 10px;
+      }
+  
+      ion-item {
+        --background: transparent;
+        --color: #ffffff;
+        --border-color: rgba(255, 255, 255, 0.2);
+        --highlight-background: #ff5c5c;
+        margin-bottom: 8px;
+        border-radius: 5px;
+  
+        &:hover {
+          --background: rgba(255, 92, 92, 0.2);
+        }
+  
+        ion-label {
+          color: #ffffff;
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
