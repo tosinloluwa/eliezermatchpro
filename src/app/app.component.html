@@ -1,3 +1,23 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" menuId="mainMenu" contentId="mainContent" #mainMenu>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item button (click)="navigateTo('home')">Home</ion-item>
+        <ion-item button (click)="navigateTo('about')">About</ion-item>
+        <ion-item button (click)="navigateTo('how-it-works')">How It Works</ion-item>
+        <ion-item button (click)="navigateTo('testimonials')">Testimonials</ion-item>
+        <ion-item button (click)="navigateTo('login')">Login</ion-item>
+        <ion-item button (click)="navigateTo('signup')">Sign Up</ion-item>
+        <ion-item button (click)="navigateTo('learn-more')">Learn More</ion-item>
+        <ion-item button (click)="navigateTo('dashboard')">Dashboard</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="mainContent"></ion-router-outlet>
 </ion-app>

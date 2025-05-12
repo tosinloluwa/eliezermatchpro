@@ -1,7 +1,5 @@
 {
-  "name": "QuickHelp_Nigeria",
-  "integrations": {
-    "cordova": {}
-  },
+  "name": "New Ionic App",
+  "integrations": {},
   "type": "angular"
 }

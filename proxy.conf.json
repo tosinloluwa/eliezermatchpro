@@ -1,0 +1,11 @@
+{
+    "/wp-json": {
+      "target": "https://eliezermatchpro.com",
+      "secure": true,
+      "changeOrigin": true,
+      "logLevel": "debug",
+      "pathRewrite": {
+        "^/wp-json": "/wp-json"
+      }
+    }
+  }

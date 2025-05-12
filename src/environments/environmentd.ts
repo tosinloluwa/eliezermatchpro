@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://eliezermatchpro.com/wp-json/'
+  apiUrl: 'https://eliezermatchpro.com/'
 };
 
 /*

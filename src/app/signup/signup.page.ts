@@ -1,20 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonContent, IonItem, IonLabel, IonInput, IonButton } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    FormsModule,
+    CommonModule, // Added to support *ngIf
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonMenuButton,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton
+  ],
 })
-export class SignupPage implements OnInit {
+export class SignupPage {
+  email: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
-  constructor() { }
+  constructor(private router: Router) {}
 
-  ngOnInit() {
+  onSignup() {
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+    this.errorMessage = '';
+    console.log('Signup attempted with:', this.email, this.password);
+    // Add your signup logic here
   }
-
 }

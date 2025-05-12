@@ -1,12 +1,12 @@
 {
-  "name": "quickhelp_nigeria",
+  "name": "eliezermatchpro",
   "version": "0.0.1",
   "author": "The QuickHelp Nigeria Team",
   "homepage": "https://quickhelp.com.ng.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ionic serve -- --proxy-config proxy.conf.json",
+    "build": "ionic build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"

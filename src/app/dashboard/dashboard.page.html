@@ -1,13 +1,205 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menuId="mainMenu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Logout</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <div class="dashboard-container">
+    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <div *ngIf="dashboardData && !isLoading">
+      <!-- Admin View -->
+      <div *ngIf="dashboardData.current_user.roles.includes('administrator')">
+        <h2 class="admin-title">User Questionnaire Responses</h2>
+        <ion-grid>
+          <ion-row class="header-row">
+            <ion-col><strong>User ID</strong></ion-col>
+            <ion-col><strong>Name</strong></ion-col>
+            <ion-col><strong>Email</strong></ion-col>
+            <ion-col><strong>View</strong></ion-col>
+          </ion-row>
+          <ion-row *ngFor="let response of dashboardData.responses">
+            <ion-col>{{ response.user_id }}</ion-col>
+            <ion-col>{{ response.display_name }}</ion-col>
+            <ion-col>{{ response.user_email }}</ion-col>
+            <ion-col>
+              <ion-button size="small" (click)="openModal(response.id)">View</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <h2 class="admin-title">All Users</h2>
+        <ion-grid>
+          <ion-row class="header-row">
+            <ion-col><strong>User ID</strong></ion-col>
+            <ion-col><strong>Name</strong></ion-col>
+            <ion-col><strong>Email</strong></ion-col>
+            <ion-col><strong>Roles</strong></ion-col>
+            <ion-col><strong>Action</strong></ion-col>
+          </ion-row>
+          <ion-row *ngFor="let profile of dashboardData.all_user_profiles">
+            <ion-col>{{ profile.ID }}</ion-col>
+            <ion-col>{{ profile.display_name }}</ion-col>
+            <ion-col>{{ profile.user_email }}</ion-col>
+            <ion-col>{{ profile.roles?.join(', ') || 'No roles' }}</ion-col>
+            <ion-col>
+              <ion-button size="small" (click)="openModal(null, profile.ID)">View</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Non-Admin View -->
+      <div *ngIf="!dashboardData.current_user.roles.includes('administrator')">
+        <h2>Welcome to EliezerMatch Pro</h2>
+        <p>Your journey to finding a faith-based, purpose-driven relationship starts here.</p>
+        <ion-button class="dashboard-btn" (click)="openModal()">Provide More Information</ion-button>
+      </div>
+    </div>
+  </div>
+
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ selectedResponse ? 'User Response' : 'Marriage Compatibility Questionnaire' }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="modal-content">
+          <!-- Admin: View Response Details -->
+          <div *ngIf="selectedResponse">
+            <p><strong>User ID:</strong> {{ selectedResponse.user_id }}</p>
+            <p><strong>Name:</strong> {{ selectedResponse.display_name }}</p>
+            <p><strong>Email:</strong> {{ selectedResponse.user_email }}</p>
+            <p><strong>Role of God:</strong> {{ selectedResponse.role_of_god || 'N/A' }}</p>
+            <p><strong>Christ-Centered Marriage:</strong> {{ selectedResponse.christ_centered_marriage || 'N/A' }}</p>
+            <p><strong>Commitment Definition:</strong> {{ selectedResponse.commitment_definition || 'N/A' }}</p>
+            <p><strong>Key Marriage Components:</strong> {{ selectedResponse.key_marriage_components || 'N/A' }}</p>
+            <p><strong>Relationship with Christ:</strong> {{ selectedResponse.relationship_with_christ || 'N/A' }}</p>
+            <p><strong>Bible Study Frequency:</strong> {{ selectedResponse.bible_study_frequency || 'N/A' }}</p>
+            <p><strong>Financial Approach:</strong> {{ selectedResponse.financial_approach || 'N/A' }}</p>
+            <p><strong>Spiritual Differences:</strong> {{ selectedResponse.spiritual_differences || 'N/A' }}</p>
+            <p><strong>Marriage Goals:</strong> {{ selectedResponse.marriage_goals || 'N/A' }}</p>
+            <p><strong>Raising Children:</strong> {{ selectedResponse.raising_children || 'N/A' }}</p>
+            <p><strong>Conflict Resolution:</strong> {{ selectedResponse.conflict_resolution || 'N/A' }}</p>
+            <p><strong>Approach Forgiveness:</strong> {{ selectedResponse.approach_forgiveness || 'N/A' }}</p>
+            <p><strong>Qualities in Spouse:</strong> {{ selectedResponse.qualities_in_spouse || 'N/A' }}</p>
+            <p><strong>Marriage Readiness:</strong> {{ selectedResponse.marriage_readiness || 'N/A' }}</p>
+          </div>
+
+          <!-- Non-Admin: Questionnaire Form -->
+          <div *ngIf="!selectedResponse">
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 0 }">
+              <h4>Section 1: God as the Center of Marriage</h4>
+              <ion-item>
+                <ion-label position="stacked">How would you describe the role of God in your daily life?</ion-label>
+                <ion-textarea [(ngModel)]="formData.role_of_god" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">What does a Christ-centered marriage mean to you?</ion-label>
+                <ion-textarea [(ngModel)]="formData.christ_centered_marriage" required></ion-textarea>
+              </ion-item>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 1 }">
+              <h4>Section 2: Commitment and Faithfulness</h4>
+              <ion-item>
+                <ion-label position="stacked">How do you define commitment in a marriage?</ion-label>
+                <ion-textarea [(ngModel)]="formData.commitment_definition" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">What do you believe are the key components of a strong, lasting marriage?</ion-label>
+                <ion-textarea [(ngModel)]="formData.key_marriage_components" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 2 }">
+              <h4>Section 3: Spiritual Experience and Compatibility</h4>
+              <ion-item>
+                <ion-label position="stacked">How would you describe your personal relationship with Christ?</ion-label>
+                <ion-textarea [(ngModel)]="formData.relationship_with_christ" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">How often do you engage in Bible study or other forms of spiritual growth?</ion-label>
+                <ion-textarea [(ngModel)]="formData.bible_study_frequency" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 3 }">
+              <h4>Section 4: Unity in Various Aspects</h4>
+              <ion-item>
+                <ion-label position="stacked">How do you approach finances in a marriage?</ion-label>
+                <ion-textarea [(ngModel)]="formData.financial_approach" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">How would you address differences in spiritual convictions?</ion-label>
+                <ion-textarea [(ngModel)]="formData.spiritual_differences" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 4 }">
+              <h4>Section 5: Marriage Goals and Expectations</h4>
+              <ion-item>
+                <ion-label position="stacked">What are your top three goals for your marriage?</ion-label>
+                <ion-textarea [(ngModel)]="formData.marriage_goals" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">How do you envision raising children?</ion-label>
+                <ion-textarea [(ngModel)]="formData.raising_children" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 5 }">
+              <h4>Section 6: Conflict Resolution and Communication</h4>
+              <ion-item>
+                <ion-label position="stacked">How do you handle conflict in relationships?</ion-label>
+                <ion-textarea [(ngModel)]="formData.conflict_resolution" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">How do you approach forgiveness?</ion-label>
+                <ion-textarea [(ngModel)]="formData.approach_forgiveness" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="next-step" (click)="nextStep()">Next</ion-button>
+            </div>
+
+            <div class="form-step" [ngClass]="{ 'active': currentStep === 6 }">
+              <h4>Section 7: Personal Reflection and Future Vision</h4>
+              <ion-item>
+                <ion-label position="stacked">What are the most important qualities you are looking for in a spouse?</ion-label>
+                <ion-textarea [(ngModel)]="formData.qualities_in_spouse" required></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">How would you describe your readiness for marriage?</ion-label>
+                <ion-textarea [(ngModel)]="formData.marriage_readiness" required></ion-textarea>
+              </ion-item>
+              <ion-button class="prev-step" (click)="prevStep()">Previous</ion-button>
+              <ion-button class="dashboard-btn" (click)="submitForm()">Submit</ion-button>
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

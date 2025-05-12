@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonMenuButton, Platform } from '@ionic/angular/standalone';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem } from '@ionic/angular/standalone';
+import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { Dialogs } from '@awesome-cordova-plugins/dialogs/ngx';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -19,20 +18,18 @@ import { RouterModule } from '@angular/router';
     IonTitle,
     IonContent,
     IonList,
-    IonItem,
-    IonLabel,
-    IonMenuButton,
-    FormsModule,
-    CommonModule,
-    RouterModule
+    IonItem
   ],
   providers: [SplashScreen, Dialogs]
 })
 export class AppComponent {
+  @ViewChild('mainMenu') menu!: IonMenu; // Reference to the IonMenu
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private dialogs: Dialogs
+    private dialogs: Dialogs,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -72,6 +69,17 @@ export class AppComponent {
       (navigator as any).app.exitApp();
     } else {
       console.log('Quit function is only available on device.');
+    }
+  }
+
+  async navigateTo(path: string) {
+    try {
+      await this.router.navigate([`/${path}`]);
+      console.log(`Navigated to /${path}`);
+      await this.menu.close(); // Close the menu after navigation
+      console.log('Menu closed');
+    } catch (err) {
+      console.error(`Navigation to /${path} failed:`, err);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonContent, IonButton, IonFab, IonFabButton, IonIcon, IonMenu, IonMenuButton, IonHeader, IonToolbar, IonTitle, IonList, IonItem } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonContent, IonButton, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { callOutline } from 'ionicons/icons';
 
@@ -12,18 +12,16 @@ import { callOutline } from 'ionicons/icons';
   standalone: true,
   imports: [
     CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonMenuButton,
     IonContent,
     IonButton,
     IonFab,
     IonFabButton,
-    IonIcon,
-    IonMenu,
-    IonMenuButton,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonList,
-    IonItem
+    IonIcon
   ],
 })
 export class HomePage {
@@ -52,14 +50,6 @@ export class HomePage {
       this.router.navigate(['/learn-more']);
     } catch (error) {
       console.error('Navigation to learn-more failed:', error);
-    }
-  }
-
-  goToPage(page: string) {
-    try {
-      this.router.navigate([`/${page}`]);
-    } catch (error) {
-      console.error(`Navigation to ${page} failed:`, error);
     }
   }
 }
