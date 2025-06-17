@@ -21,16 +21,16 @@
         <h2 class="admin-title">User Questionnaire Responses</h2>
         <ion-grid>
           <ion-row class="header-row">
-            <strong>User ID</strong></ion-col>
-            <strong>Name</strong></ion-col>
-            <strong>Email</strong></ion-col>
-            <strong>View</strong></ion-col>
+            <ion-col><strong>User ID</strong></ion-col>
+            <ion-col><strong>Name</strong></ion-col>
+            <ion-col><strong>Email</strong></ion-col>
+            <ion-col><strong>View</strong></ion-col>
           </ion-row>
           <ion-row *ngFor="let response of dashboardData.responses">
-            {{ response.user_id }}</ion-col>
-            {{ response.display_name }}</ion-col>
-            {{ response.user_email }}</ion-col>
-            
+            <ion-col>{{ response.user_id }}</ion-col>
+            <ion-col>{{ response.display_name }}</ion-col>
+            <ion-col>{{ response.user_email }}</ion-col>
+            <ion-col>
               <ion-button size="small" (click)="openModal(response.id)">View</ion-button>
             </ion-col>
           </ion-row>
@@ -39,26 +39,18 @@
         <h2 class="admin-title">All Users</h2>
         <ion-grid>
           <ion-row class="header-row">
-            <strong>User ID</strong></ion-col>
-            <strong>Name</strong></ion-col>
-            <strong>Email</strong></ion-col>
-            <strong>Roles</strong></ion-col>
-            <strong>Action</strong></ion-col>
+            <ion-col><strong>User ID</strong></ion-col>
+            <ion-col><strong>Name</strong></ion-col>
+            <ion-col><strong>Email</strong></ion-col>
+            <ion-col><strong>Roles</strong></ion-col>
+            <ion-col><strong>Action</strong></ion-col>
           </ion-row>
           <ion-row *ngFor="let profile of dashboardData.all_user_profiles">
-<<<<<<< HEAD
             <ion-col>{{ profile.ID }}</ion-col>
             <ion-col>{{ profile.display_name }}</ion-col>
             <ion-col>{{ profile.user_email }}</ion-col>
-            <ion-col>{{ profile.roles.join(', ') || 'No roles' }}</ion-col>
+            <ion-col>{{ profile.roles?.join(', ') || 'No roles' }}</ion-col>
             <ion-col>
-=======
-            {{ profile.ID }}</ion-col>
-            {{ profile.display_name }}</ion-col>
-            {{ profile.user_email }}</ion-col>
-            {{ profile.roles.join(', ') || 'No roles' }}</ion-col>
-            
->>>>>>> e385c2fe0251f17196bda17ced477f329d0544f1
               <ion-button size="small" (click)="openModal(null, profile.ID)">View</ion-button>
             </ion-col>
           </ion-row>
