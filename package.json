@@ -44,7 +44,6 @@
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "cordova-android": "^13.0.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
@@ -76,9 +75,7 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-dialogs": {}
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": []
   },
   "main": "karma.conf.js",
   "keywords": [],
