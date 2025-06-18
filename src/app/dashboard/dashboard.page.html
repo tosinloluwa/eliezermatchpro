@@ -49,7 +49,7 @@
             <ion-col>{{ profile.ID }}</ion-col>
             <ion-col>{{ profile.display_name }}</ion-col>
             <ion-col>{{ profile.user_email }}</ion-col>
-            <ion-col>{{ profile.roles?.join(', ') || 'No roles' }}</ion-col>
+            <ion-col>{{ profile.roles.join(', ') || 'No roles' }}</ion-col>
             <ion-col>
               <ion-button size="small" (click)="openModal(null, profile.ID)">View</ion-button>
             </ion-col>
