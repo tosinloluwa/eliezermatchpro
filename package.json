@@ -62,7 +62,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "nx": "^19.2.2",
-    "quickhelp_nigeria": "file:android",
     "typescript": "~5.2.2"
   },
   "description": "An Ionic project",
@@ -75,7 +74,9 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-dialogs": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   },
   "main": "karma.conf.js",
   "keywords": [],
