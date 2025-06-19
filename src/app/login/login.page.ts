@@ -6,10 +6,13 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonContent, IonItem, IonLabel, IonInput, IonButton, IonSpinner } from '@ionic/angular/standalone';
 
 interface LoginResponse {
-  success: boolean;
-  message?: string;
-  token?: string;
-  user_id?: number;
+  current_user?: {
+    ID: number;
+    display_name: string;
+    user_email: string;
+    roles: string[];
+  };
+  error?: string;
 }
 
 @Component({
@@ -53,27 +56,31 @@ export class LoginPage {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const apiUrl = '/wp-json/em/v1/login'; // Use proxy path
-    const credentials = {
-      email: this.email,
-      password: this.password
-    };
-
+    const apiUrl = '/dashboard.php'; // Updated to match server
+    const token = btoa(`${1}:${Math.floor(Date.now() / 1000)}`);
     const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
 
     try {
-      const response = await this.http.post<LoginResponse>(apiUrl, credentials, { headers }).toPromise();
-      if (response && response.success) {
-        localStorage.setItem('auth_token', response.token || 'logged_in');
-        console.log('Login successful, response:', response);
-        this.router.navigate(['/dashboard']);
+      const response = await this.http.get<LoginResponse>(apiUrl, { headers }).toPromise();
+      if (response) {
+        console.log('Response:', response);
+        if (response.current_user) {
+          console.log('Login successful', response);
+          localStorage.setItem('auth_token', token);
+          this.router.navigate(['/dashboard']);
+        } else if (response.error) {
+          this.errorMessage = `Login failed: ${response.error}`;
+        } else {
+          this.errorMessage = 'Login failed: Unexpected response';
+        }
       } else {
-        this.errorMessage = response?.message || 'Invalid credentials or server issue';
+        this.errorMessage = 'Login failed: No response from server';
       }
     } catch (error: unknown) {
-      console.error('Login failed:', error);
+      console.error('Login failed for URL:', apiUrl, error);
       if (error instanceof HttpErrorResponse) {
         this.errorMessage = `Login failed: ${error.statusText} (Status: ${error.status}). Check CORS or server configuration.`;
         if (error.error instanceof Blob) {

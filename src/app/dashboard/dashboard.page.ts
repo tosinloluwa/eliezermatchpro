@@ -75,7 +75,7 @@ export class DashboardPage implements OnInit {
   };
   selectedResponse: UserResponse | null = null;
 
-  private apiUrl: string = 'https://eliezermatchpro.com/';
+  private apiUrl: string = '/dashboard.php'; // Use proxy for local, absolute for prod
 
   constructor(
     private http: HttpClient,
@@ -102,7 +102,7 @@ export class DashboardPage implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    this.http.get<DashboardData>(`${this.apiUrl}dashboard.php`, { headers })
+    this.http.get<DashboardData>(this.apiUrl, { headers })
       .subscribe({
         next: (data) => {
           this.dashboardData = data;
@@ -165,7 +165,7 @@ export class DashboardPage implements OnInit {
       ...this.formData
     };
 
-    this.http.post(`${this.apiUrl}submit_questionnaire.php`, body, { headers })
+    this.http.post(`${this.apiUrl.replace('dashboard.php', 'submit_questionnaire.php')}`, body, { headers })
       .subscribe({
         next: (response: any) => {
           alert(response.message);
