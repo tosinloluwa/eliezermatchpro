@@ -1,8 +1,8 @@
 {
   "name": "eliezermatchpro",
   "version": "0.0.1",
-  "author": "The QuickHelp Nigeria Team",
-  "homepage": "https://quickhelp.com.ng.com/",
+  "author": "The Eliezermatchpro Team",
+  "homepage": "https://eliezermatchpro.com/",
   "scripts": {
     "ng": "ng",
     "start": "ionic serve -- --proxy-config proxy.conf.json",
