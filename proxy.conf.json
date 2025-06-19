@@ -5,7 +5,7 @@
       "changeOrigin": true,
       "logLevel": "debug",
       "pathRewrite": {
-        "^/wp-json": "/wp-json"
+        "^/wp-json": ""
       }
     }
   }
