@@ -1,0 +1,1 @@
+-e '#!/bin/bash\necho "Listing Java installations in /usr/lib/jvm:"\nls -l /usr/lib/jvm\necho "Current Java version:"\njava -version\necho "JAVA_HOME is set to: $JAVA_HOME"\nwhich java' 
