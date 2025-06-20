@@ -57,7 +57,7 @@ export class LoginPage {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const apiUrl = '/dashboard.php';
+    const apiUrl = 'https://eliezermatchpro.com/dashboard.php'; // Hardcoded URL
     const body = { email: this.email, password: this.password };
     const tempToken = btoa(`1:${Math.floor(Date.now() / 1000)}`); // Temporary token for login
     const headers = new HttpHeaders({
