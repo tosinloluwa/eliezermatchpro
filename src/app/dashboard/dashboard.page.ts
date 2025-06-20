@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 interface UserResponse {
   id: number;
@@ -75,7 +76,7 @@ export class DashboardPage implements OnInit {
   };
   selectedResponse: UserResponse | null = null;
 
-  private apiUrl: string = '/dashboard.php'; // Use proxy for local, absolute for prod
+  private apiUrl: string = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -87,34 +88,36 @@ export class DashboardPage implements OnInit {
     this.loadDashboard();
   }
 
-  loadDashboard() {
-    this.isLoading = true;
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      this.errorMessage = 'No authentication token found. Please log in.';
-      this.router.navigate(['/login']);
-      this.isLoading = false;
-      return;
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
-    this.http.get<DashboardData>(this.apiUrl, { headers })
-      .subscribe({
-        next: (data) => {
-          this.dashboardData = data;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Failed to load dashboard:', error);
-          this.errorMessage = 'Error loading dashboard. Please try again later.';
-          this.isLoading = false;
-        }
-      });
+loadDashboard() {
+  this.isLoading = true;
+  const token = localStorage.getItem('auth_token');
+  if (!token) {
+    this.errorMessage = 'No authentication token found. Please log in.';
+    this.router.navigate(['/login']);
+    this.isLoading = false;
+    return;
   }
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+  const fullUrl = `${this.apiUrl}dashboard.php`;
+  console.log('Dashboard URL:', fullUrl);
+
+  this.http.get<DashboardData>(fullUrl, { headers })
+    .subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load dashboard:', error);
+        this.errorMessage = `Error loading dashboard: ${error.statusText} (Status: ${error.status}). Check server configuration.`;
+        this.isLoading = false;
+      }
+    });
+}
 
   logout() {
     localStorage.removeItem('auth_token');
@@ -165,7 +168,7 @@ export class DashboardPage implements OnInit {
       ...this.formData
     };
 
-    this.http.post(`${this.apiUrl.replace('dashboard.php', 'submit_questionnaire.php')}`, body, { headers })
+    this.http.post(`${this.apiUrl}submit_questionnaire.php`, body, { headers })
       .subscribe({
         next: (response: any) => {
           alert(response.message);

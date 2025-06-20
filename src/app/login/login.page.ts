@@ -50,6 +50,7 @@ export class LoginPage {
   async onLogin() {
     if (!this.email || !this.password) {
       this.errorMessage = 'Please fill in all fields';
+      console.log('Debug: Validation failed - Empty email or password');
       return;
     }
 
@@ -57,48 +58,73 @@ export class LoginPage {
     this.errorMessage = '';
 
     const apiUrl = '/dashboard.php';
-    const token = btoa(`${1}:${Math.floor(Date.now() / 1000)}`);
+    const body = { email: this.email, password: this.password };
+    const tempToken = btoa(`1:${Math.floor(Date.now() / 1000)}`); // Temporary token for login
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${tempToken}`,
       'Content-Type': 'application/json'
     });
 
+    console.log('Debug: Starting login request');
+    console.log('Debug: API URL:', apiUrl);
+    console.log('Debug: Request Headers:', headers);
+    console.log('Debug: Request Body:', body);
+
     try {
-      const response = await this.http.get<LoginResponse>(apiUrl, { headers }).toPromise();
+      const startTime = performance.now();
+      const response = await this.http.post<LoginResponse>(apiUrl, body, { headers }).toPromise();
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+
       if (response) {
-        console.log('Response:', response);
+        console.log('Debug: Response received:', response);
+        console.log(`Debug: Request duration: ${duration}ms`);
         if (response.current_user) {
-          console.log('Login successful', response);
-          localStorage.setItem('auth_token', token);
+          console.log('Debug: Login successful', response);
+          const newToken = btoa(`${response.current_user.ID}:${Math.floor(Date.now() / 1000)}`);
+          localStorage.setItem('auth_token', newToken);
+          console.log('Debug: New token stored:', newToken);
           this.router.navigate(['/dashboard']);
         } else if (response.error) {
           this.errorMessage = `Login failed: ${response.error}`;
+          console.log('Debug: Login failed due to error:', response.error);
         } else {
           this.errorMessage = 'Login failed: Unexpected response';
+          console.log('Debug: Login failed - Unexpected response');
         }
       } else {
         this.errorMessage = 'Login failed: No response from server';
+        console.log('Debug: Login failed - No response');
       }
     } catch (error: unknown) {
-      console.error('Login failed for URL:', window.location.origin + apiUrl, error);
+      console.error('Debug: Login failed for URL:', apiUrl, error);
       if (error instanceof HttpErrorResponse) {
-        this.errorMessage = `Login failed: ${error.statusText} (Status: ${error.status}). Check server configuration. Full URL: ${window.location.origin + apiUrl}`;
+        this.errorMessage = `Login failed: ${error.statusText} (Status: ${error.status}). Check server configuration.`;
+        console.log('Debug: HTTP Error Details:', {
+          status: error.status,
+          statusText: error.statusText,
+          url: error.url,
+          error: error.error
+        });
         if (error.error instanceof Blob) {
           const reader = new FileReader();
           reader.onload = () => {
             const text = reader.result as string;
-            console.log('Error details:', text);
-            this.errorMessage = `Login failed: ${text}. Full URL: ${window.location.origin + apiUrl}`;
+            console.log('Debug: Error Blob Details:', text);
+            this.errorMessage = `Login failed: ${text}`;
           };
           reader.readAsText(error.error);
         } else if (error.error && typeof error.error === 'object' && error.error.message) {
-          this.errorMessage = `Login failed: ${error.error.message}. Full URL: ${window.location.origin + apiUrl}`;
+          this.errorMessage = `Login failed: ${error.error.message}`;
+          console.log('Debug: Error Message:', error.error.message);
         }
       } else {
         this.errorMessage = 'Login failed due to an unknown error. Check console.';
+        console.log('Debug: Unknown Error:', error);
       }
     } finally {
       this.isLoading = false;
+      console.log('Debug: Login process completed');
     }
   }
 }
