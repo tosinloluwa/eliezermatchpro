@@ -56,7 +56,7 @@ export class LoginPage {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const apiUrl = '/dashboard.php'; // Updated to match server
+    const apiUrl = '/dashboard.php';
     const token = btoa(`${1}:${Math.floor(Date.now() / 1000)}`);
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -80,19 +80,19 @@ export class LoginPage {
         this.errorMessage = 'Login failed: No response from server';
       }
     } catch (error: unknown) {
-      console.error('Login failed for URL:', apiUrl, error);
+      console.error('Login failed for URL:', window.location.origin + apiUrl, error);
       if (error instanceof HttpErrorResponse) {
-        this.errorMessage = `Login failed: ${error.statusText} (Status: ${error.status}). Check CORS or server configuration.`;
+        this.errorMessage = `Login failed: ${error.statusText} (Status: ${error.status}). Check server configuration. Full URL: ${window.location.origin + apiUrl}`;
         if (error.error instanceof Blob) {
           const reader = new FileReader();
           reader.onload = () => {
             const text = reader.result as string;
             console.log('Error details:', text);
-            this.errorMessage = `Login failed: ${text}`;
+            this.errorMessage = `Login failed: ${text}. Full URL: ${window.location.origin + apiUrl}`;
           };
           reader.readAsText(error.error);
         } else if (error.error && typeof error.error === 'object' && error.error.message) {
-          this.errorMessage = `Login failed: ${error.error.message}`;
+          this.errorMessage = `Login failed: ${error.error.message}. Full URL: ${window.location.origin + apiUrl}`;
         }
       } else {
         this.errorMessage = 'Login failed due to an unknown error. Check console.';
