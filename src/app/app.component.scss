@@ -1,54 +1,257 @@
+// ==========================================================
+// 1. GLOBAL APP SHELL STYLES
+// ==========================================================
+ion-app {
+  // Global background settings
+  background: transparent;
+}
+
+ion-content {
+  --background: transparent;
+}
+
+ion-page {
+  background: transparent;
+}
+
+ion-router-outlet {
+  background: transparent;
+}
+
+// Remove default tap highlight color
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+// ==========================================================
+// 2. SIDE MENU STYLING (Preserving your custom background image/gradient)
+// ==========================================================
 ion-menu {
-    --background: transparent;
-  
-    ion-header {
-      ion-toolbar {
-        --background: rgba(0, 0, 0, 0.8);
-        --color: #ffffff;
-  
-        ion-title {
-          color: #ffffff;
-          font-weight: 600;
-          font-size: 1.2rem;
-        }
-      }
-    }
-  
-    ion-content {
-      --background: transparent;
+  --background: transparent; // Menu container is transparent to show underlying content
+
+  ion-header {
+    ion-toolbar {
+      --background: rgba(0, 0, 0, 0.8);
       --color: #ffffff;
-  
-      &::part(scroll) {
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/assets/images/back.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-  
-      ion-list {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 10px;
-        margin: 15px;
-        padding: 10px;
-      }
-  
-      ion-item {
-        --background: transparent;
-        --color: #ffffff;
-        --border-color: rgba(255, 255, 255, 0.2);
-        --highlight-background: #ff5c5c;
-        margin-bottom: 8px;
-        border-radius: 5px;
-  
-        &:hover {
-          --background: rgba(255, 92, 92, 0.2);
-        }
-  
-        ion-label {
-          color: #ffffff;
-          font-size: 1rem;
-          font-weight: 500;
-        }
+      
+      ion-title {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.2rem;
       }
     }
   }
+
+  ion-content {
+    --background: transparent; // Content part is transparent
+    --color: #ffffff;
+
+    // Apply the background image/gradient to the scrollable area
+    &::part(scroll) {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/assets/images/back.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    ion-list {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      margin: 15px;
+      padding: 10px;
+    }
+
+    ion-item {
+      --background: transparent;
+      --color: #ffffff;
+      --border-color: rgba(255, 255, 255, 0.2);
+      --highlight-background: #ff5c5c;
+      margin-bottom: 8px;
+      border-radius: 5px;
+
+      &:hover {
+        --background: rgba(255, 92, 92, 0.2);
+      }
+
+      ion-label {
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// ==========================================================
+// 3. FIX FOR TRANSPARENT ION-SELECT DROPDOWN (Global Fix)
+// ==========================================================
+// This is the definitive fix to remove all transparency from the alert/radio group.
+// The custom class '.custom-pair-select-alert' must be applied to the <ion-select> tag:
+// <ion-select interface="alert" class="custom-pair-select-alert"> ... </ion-select>
+.custom-pair-select-alert {
+  // Set the overall backdrop opacity if needed, but the wrapper is the key.
+  --backdrop-opacity: 0.9; 
+  
+  // Target the alert overlay container
+  .alert-wrapper {
+    background: #1e1e1e !important; 
+    color: #ffffff !important;
+
+    // Target the entire list of radio buttons
+    .alert-radio-group {
+      background: #1e1e1e !important;
+    }
+    
+    // Target the individual radio button items
+    .alert-radio-button, .alert-tappable {
+      background: #1e1e1e !important;
+      
+      .alert-button-inner {
+        background: #1e1e1e !important;
+      }
+      
+      .alert-radio-label {
+        color: #ffffff !important;
+      }
+    }
+  }
+  
+  // Target the bottom container with the Cancel/OK buttons
+  .alert-button-group {
+    background: #1e1e1e !important;
+  }
+}
+// Fix for ion-select alert/popover transparency issue
+ion-alert,
+ion-action-sheet,
+.alert-wrapper,
+.action-sheet-wrapper {
+  &.sc-ion-alert-md,
+  &.sc-ion-alert-ios,
+  &.sc-ion-action-sheet-md,
+  &.sc-ion-action-sheet-ios {
+    --background: rgba(30, 30, 30, 0.98) !important;
+    --backdrop-opacity: 0.5;
+  }
+
+  .alert-wrapper,
+  .action-sheet-wrapper {
+    background: rgba(30, 30, 30, 0.98) !important;
+  }
+
+  // Alert radio group (the list of options)
+  .alert-radio-group {
+    background: rgba(30, 30, 30, 0.98) !important;
+  }
+
+  // Individual radio buttons
+  .alert-radio-button,
+  .alert-tappable {
+    background: transparent !important;
+    
+    .alert-radio-label {
+      color: #ffffff !important;
+    }
+  }
+
+  // Checked radio button
+  .alert-radio-button[aria-checked="true"] {
+    background: rgba(255, 92, 92, 0.2) !important;
+  }
+
+  // Alert buttons (OK/Cancel)
+  .alert-button-group {
+    background: rgba(30, 30, 30, 0.98) !important;
+  }
+
+  .alert-button {
+    color: #ff5c5c !important;
+    
+    &.alert-button-role-cancel {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+
+  // Alert title and message
+  .alert-title,
+  .alert-message {
+    color: #ffffff !important;
+  }
+}
+
+// Fix ion-select alert appearing behind modals and make it opaque
+ion-alert {
+  z-index: 99999 !important; // Ensure it appears above modals
+  
+  .alert-wrapper {
+    background: #1e1e1e !important; // Solid dark background (no transparency)
+    backdrop-filter: none !important;
+  }
+
+  // Radio group container
+  .alert-radio-group {
+    background: #1e1e1e !important;
+    border: none !important;
+  }
+
+  // Individual radio items
+  .alert-radio-button {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    
+    &:hover {
+      background: rgba(255, 92, 92, 0.1) !important;
+    }
+  }
+
+  // Selected/checked radio
+  .alert-radio-button[aria-checked="true"] {
+    background: rgba(255, 92, 92, 0.2) !important;
+    
+    .alert-radio-icon {
+      border-color: #ff5c5c !important;
+      
+      .alert-radio-inner {
+        background: #ff5c5c !important;
+      }
+    }
+  }
+
+  // Radio label text
+  .alert-radio-label {
+    color: #ffffff !important;
+    font-size: 14px !important;
+  }
+
+  // Alert header
+  .alert-head {
+    background: #1e1e1e !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .alert-title {
+    color: #ffffff !important;
+  }
+
+  // Alert buttons (Cancel/OK)
+  .alert-button-group {
+    background: #1e1e1e !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .alert-button {
+    color: #ff5c5c !important;
+    
+    &.alert-button-role-cancel {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+}
+
+// Also fix the backdrop
+ion-backdrop {
+  &.sc-ion-alert-md,
+  &.sc-ion-alert-ios {
+    background: rgba(0, 0, 0, 0.7) !important; // Darker backdrop
+  }
+}

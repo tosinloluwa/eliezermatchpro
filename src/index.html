@@ -10,6 +10,25 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
   <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+  <style>
+  /* Force ion-alert to always be on top with solid background */
+  ion-alert {
+    z-index: 99999 !important;
+  }
+  
+  ion-alert .alert-wrapper {
+    background: #1e1e1e !important;
+    color: white !important;
+  }
+  
+  ion-alert .alert-radio-label {
+    color: white !important;
+  }
+  
+  ion-alert .alert-radio-group {
+    background: #1e1e1e !important;
+  }
+</style>
 </head>
 <body>
   <app-root></app-root>

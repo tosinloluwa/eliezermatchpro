@@ -1,13 +1,183 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>about</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menuId="mainMenu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>About Us</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">about</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="about-container">
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-overlay">
+        <h1 class="hero-title">Our Story</h1>
+        <p class="hero-subtitle">Building God-Ordained Unions Through Faith</p>
+      </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="content-section">
+      <div class="section-card mission-card">
+        <div class="icon-wrapper">
+          <ion-icon name="heart-circle-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Our Mission</h2>
+        <p class="section-text">
+          Inspired by the biblical story of Eliezer's careful search for a wife for Isaac (Genesis 24), 
+          our mission is simple: to connect Christian singles with life partners who share their values, 
+          beliefs, and vision for a Christ-centered marriage.
+        </p>
+        <p class="section-text">
+          At EliezerMatch, we believe that love is more than a feeling—it's a sacred journey, designed by God, 
+          to unite two hearts in faith, purpose, and commitment.
+        </p>
+      </div>
+
+      <!-- What Sets Us Apart -->
+      <div class="section-card">
+        <div class="icon-wrapper">
+          <ion-icon name="star-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">What Sets Us Apart</h2>
+        
+        <div class="feature-list">
+          <div class="feature-item">
+            <ion-icon name="checkmark-circle" class="feature-icon"></ion-icon>
+            <div class="feature-content">
+              <h3>Faith-First Matching</h3>
+              <p>We match you with someone who shares your devotion to Christ and your commitment to a godly marriage.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <ion-icon name="checkmark-circle" class="feature-icon"></ion-icon>
+            <div class="feature-content">
+              <h3>Beyond Surface Level</h3>
+              <p>Our process looks beyond hobbies and interests to explore your beliefs, values, and vision for life—ensuring a foundation for lasting love.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <ion-icon name="checkmark-circle" class="feature-icon"></ion-icon>
+            <div class="feature-content">
+              <h3>Prayerful Guidance</h3>
+              <p>Our team of relationship experts and spiritual advisors prayerfully pairs you with someone who complements your journey.</p>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <ion-icon name="checkmark-circle" class="feature-icon"></ion-icon>
+            <div class="feature-content">
+              <h3>Spiritual Foundation</h3>
+              <p>We strongly depend on prayers and spiritual intuition led by the Holy Spirit for guidance and counseling, both before and after compatibility assessments.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="section-card process-card">
+        <div class="icon-wrapper">
+          <ion-icon name="map-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Our Process</h2>
+        
+        <div class="process-steps">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Share Your Story</h3>
+              <p>Share your faith, values, and dreams through in-depth questions to help us understand you and what you're looking for in a partner.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Prayerful Matching</h3>
+              <p>Take our compatibility questionnaire and undergo careful vetting, while our prayerful team pairs you with someone who aligns with your Christian values and life goals.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Meaningful Connection</h3>
+              <p>Start with respectful, meaningful conversations, supported by optional pre-marriage counseling, to foster a strong, faith-centered relationship.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Our Belief -->
+      <div class="section-card belief-card">
+        <div class="icon-wrapper">
+          <ion-icon name="book-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Our Belief</h2>
+        <p class="section-text highlight">
+          "Love is more than just a feeling—it's a journey of faith, growth, and unity in Christ."
+        </p>
+        <p class="section-text">
+          EliezerMatch Pro is built on a foundation of compatibility assessments and is deeply rooted in faith. 
+          We believe that divine wisdom is essential in the journey toward a God-ordained union, and we encourage 
+          all participants to seek the Lord's direction through prayer, fasting, and biblical counsel at every stage of the process.
+        </p>
+      </div>
+
+      <!-- Community Section -->
+      <div class="section-card community-card">
+        <div class="icon-wrapper">
+          <ion-icon name="people-circle-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Join Our Community</h2>
+        <p class="section-text">
+          EliezerMatch is more than a dating site—it's a community of believers seeking purposeful relationships. 
+          We've been blessed to witness incredible stories of believers finding their God-ordained partners.
+        </p>
+        <p class="section-text">
+          Are you ready to find a partner who shares your heart for God and your hopes for a faithful, fulfilling marriage?
+        </p>
+        <ion-button expand="block" class="cta-button" routerLink="/signup">
+          Start Your Journey
+        </ion-button>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-section">
+        <h2 class="contact-title">Get In Touch</h2>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <ion-icon name="call-outline" class="contact-icon"></ion-icon>
+            <div class="contact-details">
+              <p class="contact-label">Phone</p>
+              <a href="tel:+12819439910" class="contact-link">+1 (281) 943-9910</a>
+              <a href="tel:+12819409381" class="contact-link">+1 (281) 940-9381</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <ion-icon name="mail-outline" class="contact-icon"></ion-icon>
+            <div class="contact-details">
+              <p class="contact-label">Email</p>
+              <a href="mailto:info@eliezermatchpro.com" class="contact-link">info&#64;eliezermatchpro.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <ion-icon name="globe-outline" class="contact-icon"></ion-icon>
+            <div class="contact-details">
+              <p class="contact-label">Website</p>
+              <a href="https://www.eliezermatchpro.com" target="_blank" class="contact-link">www.eliezermatchpro.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </ion-content>

@@ -8,16 +8,53 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+  <div *ngIf="successMessage" class="success-message">
+    <p>{{ successMessage }}</p>
+    <ion-button expand="block" routerLink="/login">Go to Login</ion-button>
+  </div>
+
+  <ion-item *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+  </ion-item>
+
+  <form *ngIf="!successMessage" (ngSubmit)="onSignup(signupForm)" #signupForm="ngForm">
     <ion-item>
-      <ion-label position="floating">Email</ion-label>
+      <ion-label position="floating">First Name <span class="required">*</span></ion-label>
+      <ion-input type="text" name="firstName" [(ngModel)]="firstName" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Last Name <span class="required">*</span></ion-label>
+      <ion-input type="text" name="lastName" [(ngModel)]="lastName" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Email <span class="required">*</span></ion-label>
       <ion-input type="email" name="email" [(ngModel)]="email" required></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" name="password" [(ngModel)]="password" required></ion-input>
+      <ion-label position="floating">Phone</ion-label>
+      <ion-input type="tel" name="phone" [(ngModel)]="phone"></ion-input>
     </ion-item>
-    <ion-button expand="block" type="submit" [disabled]="!signupForm.valid">Sign Up</ion-button>
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <ion-item>
+      <ion-label position="stacked">Country <span class="required">*</span></ion-label>
+      <ion-select [(ngModel)]="country" name="country" interface="popover" required>
+        <ion-select-option *ngFor="let c of countries" [value]="c">{{ c }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Password <span class="required">*</span></ion-label>
+      <ion-input type="password" name="password" [(ngModel)]="password" required minlength="6"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="!signupForm.valid || isLoading">
+      <ion-spinner *ngIf="isLoading"></ion-spinner>
+      <span *ngIf="!isLoading">Sign Up</span>
+    </ion-button>
+
+   <p class="login-link">Already have an account? <a routerLink="/login"><strong>Login here</strong></a></p>
   </form>
 </ion-content>

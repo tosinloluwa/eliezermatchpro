@@ -3,39 +3,75 @@
     <ion-buttons slot="start">
       <ion-menu-button menuId="mainMenu"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Home</ion-title>
+    <ion-title>EliezerMatch</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="main-container">
-    <div class="header-container">
-      <div class="logo-container">
+  <div class="home-container">
+    
+    <!-- Hero Section -->
+    <div class="hero-section" style="margin-top:25px">
+      <div class="logo-wrapper">
         <img src="assets/images/eliezer-logo.png" alt="EliezerMatch Logo" class="logo" />
       </div>
-      <ion-menu-button class="hamburger-button"></ion-menu-button>
-    </div>
-    
-    <div class="content-section">
-      <p class="description">
-        At EliezerMatch, we aim to foster meaningful connections between believers, helping them find life-long partners.
+      
+      <h1 class="hero-title">Find Your God-Given Partner</h1>
+      
+      <p class="hero-description">
+        At EliezerMatch, we aim to foster meaningful connections between believers, 
+        helping them find life-long partners rooted in faith and shared values.
       </p>
     </div>
     
-    <div class="image-container">
+    <!-- Illustration Section -->
+    <div class="illustration-section">
       <img src="assets/images/couple-illustration.png" alt="Couple Illustration" class="couple-image" />
     </div>
     
-    <div class="buttons-container">
-      <ion-button expand="block" class="signup-button" (click)="goToSignUp()">SIGN UP</ion-button>
-      <ion-button expand="block" class="login-button" (click)="goToLogin()">LOGIN</ion-button>
+    <!-- Action Buttons -->
+    <div class="actions-section">
+      <ion-button expand="block" class="signup-button" (click)="goToSignUp()">
+        Get Started
+      </ion-button>
+      <ion-button expand="block" fill="outline" class="login-button" (click)="goToLogin()">
+        Sign In
+      </ion-button>
     </div>
     
-    <div class="more-info">
-      <ion-button class="learn-more-button" (click)="goToLearnMore()">LEARN MORE</ion-button>
+    <!-- Learn More Section -->
+    <div class="info-section">
+      <ion-button fill="clear" class="learn-more-button" (click)="goToLearnMore()">
+        Learn More About Us
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
     </div>
+    
+    <!-- Features Preview -->
+    <div class="features-preview">
+      <h2 class="features-title">Why Choose EliezerMatch?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <ion-icon name="heart-outline" class="feature-icon"></ion-icon>
+          <h3>Faith-Based Matching</h3>
+          <p>Connect with believers who share your values</p>
+        </div>
+        <div class="feature-card">
+          <ion-icon name="shield-checkmark-outline" class="feature-icon"></ion-icon>
+          <h3>Safe & Secure</h3>
+          <p>Your privacy and security are our priority</p>
+        </div>
+        <div class="feature-card">
+          <ion-icon name="people-outline" class="feature-icon"></ion-icon>
+          <h3>Community Driven</h3>
+          <p>Join a community of like-minded believers</p>
+        </div>
+      </div>
+    </div>
+    
   </div>
   
+  <!-- Floating Action Button -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button class="call-button">
       <ion-icon name="call-outline"></ion-icon>

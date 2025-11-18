@@ -50,3 +50,18 @@ ion-content {
       margin-top: 10px;
     }
   }
+.signup-link {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 15px;
+  font-size: 0.9rem;
+
+  a {
+    color: #ff5c5c;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}

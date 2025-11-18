@@ -242,3 +242,115 @@ html {
    */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
+// Add these to your existing theme/variables.scss file
+
+:root {
+  // Remove default Ionic backgrounds
+  --ion-background-color: transparent;
+  --ion-toolbar-background: rgba(74, 74, 74, 0.95);
+  --ion-toolbar-color: #ffffff;
+  
+  // Set default text colors
+  --ion-text-color: #ffffff;
+  
+  // Remove borders that might appear as white lines
+  --ion-toolbar-border-color: transparent;
+  --ion-item-border-color: rgba(255, 255, 255, 0.1);
+  
+  // Ensure modals have proper backdrop
+  --ion-backdrop-color: rgba(0, 0, 0, 0.7);
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: transparent;
+    --ion-toolbar-background: rgba(74, 74, 74, 0.95);
+    --ion-toolbar-color: #ffffff;
+  }
+}
+
+// Remove any Ionic default padding that creates white space
+ion-content::part(scroll) {
+  padding-top: 0 !important;
+}
+
+// Fix for iOS safe areas
+@supports (padding-top: env(safe-area-inset-top)) {
+  ion-toolbar {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+// Add these to your existing theme/variables.scss file
+
+:root {
+  // Set default text colors
+  --ion-text-color: #ffffff;
+  
+  // Remove borders that might appear as white lines
+  --ion-toolbar-border-color: transparent;
+  --ion-item-border-color: rgba(255, 255, 255, 0.1);
+  
+  // Ensure modals have proper backdrop
+  --ion-backdrop-color: rgba(0, 0, 0, 0.7);
+}
+
+// Only make the main content area transparent, not the menu
+ion-router-outlet {
+  background: transparent;
+}
+
+ion-content:not(ion-menu ion-content) {
+  --background: transparent;
+}
+
+// Style the menu/drawer properly
+ion-menu {
+  --background: #3e4246;
+  
+  ion-header {
+    ion-toolbar {
+      --background: #4a4a4a;
+      --color: #ffffff;
+    }
+  }
+
+  ion-content {
+    --background: #3e4246;
+  }
+
+  ion-list {
+    background: #3e4246;
+    padding: 0;
+  }
+
+  ion-item {
+    --background: transparent;
+    --color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    &:hover {
+      --background: rgba(255, 92, 92, 0.15);
+    }
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-text-color: #ffffff;
+  }
+}
+
+// Remove any Ionic default padding that creates white space
+ion-content::part(scroll) {
+  padding-top: 0 !important;
+}
+
+// Fix for iOS safe areas
+@supports (padding-top: env(safe-area-inset-top)) {
+  ion-toolbar {
+    padding-top: env(safe-area-inset-top);
+  }
+}

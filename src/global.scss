@@ -9,6 +9,139 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+ /* FORCE DARK ACTION SHEET – NO TRANSPARENCY EVER */
+.force-dark-action-sheet {
+  --background: #1e1e1e !important;
+  --color: white !important;
+  --backdrop-opacity: 0.85 !important;
+}
+
+.force-dark-action-sheet .alert-wrapper,
+.force-dark-action-sheet .alert-radio-group,
+.force-dark-action-sheet .alert-button-group {
+  background: #1e1e1e !important;
+  color: white !important;
+}
+
+.force-dark-action-sheet .alert-radio-label,
+.force-dark-action-sheet .alert-title,
+.force-dark-action-sheet .alert-sub-title {
+  color: white !important;
+}
+
+// Make ion-select alert nearly full-screen
+ion-alert {
+  z-index: 99999 !important;
+  
+  .alert-wrapper {
+    background: #1e1e1e !important;
+    max-width: 90vw !important; // 90% of viewport width
+    max-height: 85vh !important; // 85% of viewport height
+    width: 90vw !important;
+    min-height: 70vh !important; // Minimum height
+  }
+
+  // Make the header bigger
+  .alert-head {
+    background: #1e1e1e !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 20px !important;
+  }
+
+  .alert-title {
+    color: #ffffff !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+  }
+
+  // Make the radio group scrollable and larger
+  .alert-radio-group {
+    background: #1e1e1e !important;
+    max-height: calc(85vh - 180px) !important; // Account for header and buttons
+    overflow-y: auto !important;
+    padding: 0 !important;
+  }
+
+  // Make each radio option bigger
+  .alert-radio-button {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    min-height: 60px !important; // Taller options
+    padding: 16px 20px !important;
+    
+    &:hover {
+      background: rgba(255, 92, 92, 0.1) !important;
+    }
+  }
+
+  // Selected/checked radio
+  .alert-radio-button[aria-checked="true"] {
+    background: rgba(255, 92, 92, 0.2) !important;
+    
+    .alert-radio-icon {
+      border-color: #ff5c5c !important;
+      width: 24px !important; // Bigger radio icon
+      height: 24px !important;
+      
+      .alert-radio-inner {
+        background: #ff5c5c !important;
+        width: 12px !important;
+        height: 12px !important;
+      }
+    }
+  }
+
+  // Make radio icon bigger
+  .alert-radio-icon {
+    width: 24px !important;
+    height: 24px !important;
+    border-width: 2px !important;
+    margin-right: 16px !important;
+  }
+
+  // Make text bigger
+  .alert-radio-label {
+    color: #ffffff !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    white-space: normal !important; // Allow text wrapping
+    word-break: break-word !important;
+  }
+
+  // Make buttons bigger
+  .alert-button-group {
+    background: #1e1e1e !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 12px !important;
+  }
+
+  .alert-button {
+    color: #ff5c5c !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    min-height: 48px !important;
+    
+    &.alert-button-role-cancel {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  ion-alert .alert-wrapper {
+    max-width: 95vw !important;
+    width: 95vw !important;
+    max-height: 90vh !important;
+    min-height: 80vh !important;
+  }
+  
+  ion-alert .alert-radio-group {
+    max-height: calc(90vh - 180px) !important;
+  }
+}
+
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -24,3 +157,4 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+

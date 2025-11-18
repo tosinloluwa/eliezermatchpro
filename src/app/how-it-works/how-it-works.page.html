@@ -1,13 +1,124 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>how-it-works</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menuId="mainMenu"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>How It Works</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">how-it-works</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="howitworks-container">
+    
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-overlay">
+        <h1 class="hero-title">How It Works</h1>
+        <p class="hero-subtitle">Our Simple Process for Finding a Faith-Centered Match</p>
+      </div>
+    </div>
+
+    <!-- Process Section -->
+    <div class="content-section">
+      <div class="section-card process-card">
+        <div class="icon-wrapper">
+          <ion-icon name="map-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Our Step-by-Step Process</h2>
+        <p class="section-text">
+          Inspired by the biblical story of Eliezer's search in Genesis 24, our process connects you with a potential life partner through prayer, compatibility, and guidance.
+        </p>
+        
+        <div class="timeline-container">
+          <div class="timeline-step active">
+            <div class="step-marker">
+              <div class="step-number">1</div>
+            </div>
+            <div class="step-content">
+              <h3>Create Your Profile</h3>
+              <p>Share your faith, values, and dreams through in-depth questions to help us understand you and what you’re looking for in a partner.</p>
+            </div>
+          </div>
+
+          <div class="timeline-line"></div>
+
+          <div class="timeline-step">
+            <div class="step-marker">
+              <div class="step-number">2</div>
+            </div>
+            <div class="step-content">
+              <h3>Find Your Match</h3>
+              <p>Take our compatibility questionnaire and undergo careful vetting, while our prayerful team pairs you with someone who aligns with your Christian values and life goals.</p>
+            </div>
+          </div>
+
+          <div class="timeline-line"></div>
+
+          <div class="timeline-step">
+            <div class="step-marker">
+              <div class="step-number">3</div>
+            </div>
+            <div class="step-content">
+              <h3>Build Your Connection</h3>
+              <p>Start with respectful, meaningful conversations, supported by optional pre-marriage counseling, to foster a strong, faith-centered relationship.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="section-card features-card">
+        <div class="icon-wrapper">
+          <ion-icon name="star-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">What Makes Our Process Unique</h2>
+        <p class="section-text">
+          We focus on faith and compatibility to help you build lasting relationships grounded in shared beliefs and values.
+        </p>
+        
+        <div class="features-grid">
+          <div class="feature-card">
+            <ion-icon name="heart-circle-outline" class="feature-icon"></ion-icon>
+            <h4>Faith-First Matching</h4>
+            <p>We pair you with someone who shares your devotion to Christ and commitment to a godly marriage.</p>
+          </div>
+
+          <div class="feature-card">
+            <ion-icon name="book-outline" class="feature-icon"></ion-icon>
+            <h4>Deep Compatibility</h4>
+            <p>Our assessments explore your beliefs, values, and life vision for a strong foundation.</p>
+          </div>
+
+          <div class="feature-card">
+            <ion-icon name="shield-checkmark-outline" class="feature-icon"></ion-icon>
+            <h4>Careful Vetting</h4>
+            <p>We verify character and readiness through prayer and thorough checks.</p>
+          </div>
+
+          <div class="feature-card">
+            <ion-icon name="sparkles-outline" class="feature-icon"></ion-icon>
+            <h4>Prayerful Guidance</h4>
+            <p>Our team provides spiritual support and personalized pairing throughout the process.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invitation Section -->
+      <div class="section-card invitation-card">
+        <div class="icon-wrapper">
+          <ion-icon name="people-circle-outline" class="section-icon"></ion-icon>
+        </div>
+        <h2 class="section-title">Ready to Get Started?</h2>
+        <p class="section-text">
+          Join our community of Christian singles seeking purposeful relationships.
+        </p>
+        <p class="section-text">
+          We've helped many find their God-ordained partners—start your journey today.
+        </p>
+        <ion-button expand="block" class="cta-button" routerLink="/signup">
+          Sign Up Now
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>
