@@ -1064,3 +1064,31 @@ ion-modal {
     --background: rgba(74, 74, 74, 0.95);
   }
 }
+.chat-match-btn {
+  --background: linear-gradient(135deg, #f59e0b, #d97706);
+  --background-activated: linear-gradient(135deg, #d97706, #f59e0b);
+  --color: #ffffff;
+  margin-top: 0;
+}
+
+.delete-account-btn {
+  --border-color: #ef4444;
+  --color: #ef4444;
+  --background-hover: rgba(239, 68, 68, 0.1);
+  margin-top: 8px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  
+  &:hover {
+    --background: rgba(239, 68, 68, 0.15);
+    --border-color: #dc2626;
+    --color: #dc2626;
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+  }
+  
+  ion-icon {
+    font-size: 18px;
+  }
+}

@@ -273,6 +273,8 @@ export class DashboardPage implements OnInit, OnDestroy {
       });
   }
 
+  
+
   // ===== FILTER METHODS =====
   filterUsers(status: string) {
     this.currentFilter = status;
@@ -632,8 +634,87 @@ export class DashboardPage implements OnInit, OnDestroy {
     return this.dashboardData?.rejected_users_count || 0;
   }
 
-  isPairedUser(profile: any): boolean {
+ isPairedUser(profile: any): boolean {
     return profile.is_paired === true;
+  }
+
+  // ===== DELETE ACCOUNT METHOD =====
+  async deleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Delete Account',
+      message: 'Are you sure you want to permanently delete your account? This action cannot be undone and all your data will be lost.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete My Account',
+          role: 'destructive',
+          handler: () => {
+            this.confirmDeleteAccount();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async confirmDeleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Final Confirmation',
+      message: 'Type "DELETE" to confirm permanent account deletion:',
+      inputs: [
+        {
+          name: 'confirmation',
+          type: 'text',
+          placeholder: 'Type DELETE here'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm Deletion',
+          role: 'destructive',
+          handler: (data) => {
+            if (data.confirmation === 'DELETE') {
+              this.performDeleteAccount();
+              return true;
+            } else {
+              this.presentAlert('Error', 'You must type "DELETE" to confirm account deletion');
+              return false;
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  performDeleteAccount() {
+    const body = {
+      user_id: this.dashboardData?.current_user.ID
+    };
+
+    this.http.post<any>(`${this.apiUrl}api_delete_account.php`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: async (response) => {
+          if (response.success) {
+            await this.presentAlert('Success', 'Your account has been permanently deleted. You will now be logged out.');
+            localStorage.removeItem('auth_token');
+            this.router.navigate(['/login']);
+          } else {
+            this.presentAlert('Error', response.error || 'Failed to delete account');
+          }
+        },
+        error: (error) => {
+          console.error('Failed to delete account:', error);
+          this.presentAlert('Error', error.error?.error || 'Failed to delete account. Please try again.');
+        }
+      });
   }
 
   // ===== UTILITY METHODS =====
