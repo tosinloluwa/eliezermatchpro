@@ -1,13 +1,83 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>testimonials</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Testimonials</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">testimonials</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="testimonials-container">
+    
+    <!-- Loading Spinner -->
+    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage && !isLoading" class="error">
+      {{ errorMessage }}
+      <ion-button (click)="loadTestimonials()" fill="outline" size="small" class="retry-btn">
+        <ion-icon slot="start" name="refresh"></ion-icon>
+        Retry
+      </ion-button>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!isLoading && !errorMessage" class="testimonials-content">
+      
+      <!-- Welcome/Header Card -->
+      <div class="welcome-card">
+        <h2>Success Stories</h2>
+        <p class="subtitle">
+          Real couples who found their God-given partner through EliezerMatch
+        </p>
+      </div>
+
+      <!-- Testimonials Grid -->
+      <div class="testimonials-grid" *ngIf="testimonials.length > 0">
+        <div class="testimony-card" *ngFor="let testimony of testimonials">
+          
+          <!-- Image Section (if available) -->
+          <div *ngIf="testimony.image" class="testimony-image">
+            <img [src]="testimony.image" [alt]="testimony.name" />
+            <div class="image-overlay"></div>
+          </div>
+
+          <!-- Content Section -->
+          <div class="testimony-content">
+            <div class="testimony-header">
+              <div class="couple-icon">
+                <ion-icon name="heart"></ion-icon>
+              </div>
+              <div class="testimony-info">
+                <h3>{{ testimony.name }}</h3>
+                <p class="location">
+                  <ion-icon name="location-outline"></ion-icon>
+                  {{ testimony.location }}
+                </p>
+              </div>
+            </div>
+
+            <div class="testimony-text">
+              <ion-icon name="quote" class="quote-icon"></ion-icon>
+              <p>{{ testimony.testimony }}</p>
+            </div>
+            
+            <div class="testimony-footer">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>{{ formatDate(testimony.date) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="testimonials.length === 0" class="empty-state">
+        <ion-icon name="people-outline" class="empty-icon"></ion-icon>
+        <h3>No testimonials yet</h3>
+        <p>Be the first to share your success story!</p>
+      </div>
+
+    </div>
+  </div>
 </ion-content>

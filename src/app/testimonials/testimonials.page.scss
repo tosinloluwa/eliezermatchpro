@@ -1,0 +1,414 @@
+// Main Container - Matching Dashboard Style
+:host {
+  display: block;
+  height: 100%;
+}
+
+.testimonials-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  min-height: calc(100vh - 56px);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(139, 94, 94, 0.95), rgba(0, 0, 0, 0.9)), 
+                url('/assets/images/back.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -1;
+  }
+}
+
+// Header Styling - Matching Dashboard
+ion-header {
+  --background: rgba(74, 74, 74, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  
+  &::after {
+    display: none;
+  }
+  
+  ion-toolbar {
+    --background: rgba(74, 74, 74, 0.95);
+    --color: #ffffff;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 56px;
+    --border-width: 0;
+    
+    ion-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+    
+    ion-back-button {
+      --color: #ffffff;
+      font-weight: 600;
+      
+      &:hover {
+        --color: #ff5c5c;
+      }
+    }
+  }
+}
+
+ion-content {
+  --background: transparent;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+// Loading & Error States - Matching Dashboard
+ion-spinner {
+  display: block;
+  margin: 100px auto;
+  --color: #ff5c5c;
+  transform: scale(1.5);
+}
+
+.error {
+  color: #ffffff;
+  text-align: center;
+  font-size: 1rem;
+  margin: 30px auto;
+  max-width: 600px;
+  background: rgba(255, 92, 92, 0.2);
+  padding: 20px 25px;
+  border-radius: 12px;
+  border-left: 5px solid #ff5c5c;
+  box-shadow: 0 4px 15px rgba(255, 92, 92, 0.2);
+  backdrop-filter: blur(10px);
+  
+  .retry-btn {
+    margin-top: 15px;
+    --border-color: #ff5c5c;
+    --color: #ff5c5c;
+  }
+}
+
+.testimonials-content {
+  animation: fadeInUp 0.6s ease;
+}
+
+// Welcome Card - Matching Dashboard Style
+.welcome-card {
+  background: linear-gradient(135deg, rgba(139, 94, 94, 0.3), rgba(62, 66, 70, 0.3));
+  border-radius: 16px;
+  padding: 40px 30px;
+  margin-bottom: 35px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Testimonials Grid - Similar to Users Grid
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+// Testimony Card - Matching User Card Style
+.testimony-card {
+  background: rgba(62, 66, 70, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(255, 92, 92, 0.2);
+    border-color: rgba(255, 92, 92, 0.3);
+  }
+}
+
+.testimony-image {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
+}
+
+.testimony-content {
+  padding: 25px;
+}
+
+.testimony-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  
+  .couple-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff5c5c, #8b5e5e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(255, 92, 92, 0.3);
+    
+    ion-icon {
+      font-size: 28px;
+      color: #ffffff;
+    }
+  }
+  
+  .testimony-info {
+    flex: 1;
+    
+    h3 {
+      color: #ffffff;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0 0 5px 0;
+    }
+    
+    .location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      margin: 0;
+      
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.testimony-text {
+  position: relative;
+  padding: 15px 0;
+  margin-bottom: 20px;
+  
+  .quote-icon {
+    position: absolute;
+    top: -5px;
+    left: -10px;
+    font-size: 40px;
+    color: #ff5c5c;
+    opacity: 0.2;
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0;
+    padding-left: 25px;
+    font-style: italic;
+  }
+}
+
+.testimony-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  
+  ion-icon {
+    font-size: 16px;
+  }
+  
+  span {
+    font-weight: 500;
+  }
+}
+
+// Empty State - Matching Dashboard Style
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(62, 66, 70, 0.4);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  .empty-icon {
+    font-size: 80px;
+    color: #ff5c5c;
+    opacity: 0.5;
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+// Animations - Matching Dashboard
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .testimonials-container {
+    padding: 20px 15px;
+  }
+  
+  .welcome-card {
+    padding: 30px 20px;
+    
+    h2 {
+      font-size: 1.6rem;
+    }
+    
+    .subtitle {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .testimony-content {
+    padding: 20px;
+  }
+  
+  .testimony-header {
+    .couple-icon {
+      width: 45px;
+      height: 45px;
+      
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+    
+    .testimony-info h3 {
+      font-size: 1.1rem;
+    }
+  }
+  
+  .testimony-text {
+    p {
+      font-size: 0.9rem;
+      padding-left: 20px;
+    }
+    
+    .quote-icon {
+      font-size: 32px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-card {
+    padding: 25px 15px;
+    
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+  
+  .testimony-card {
+    border-radius: 12px;
+  }
+  
+  .testimony-image {
+    height: 180px;
+  }
+  
+  .testimony-content {
+    padding: 18px;
+  }
+  
+  .empty-state {
+    padding: 60px 15px;
+    
+    .empty-icon {
+      font-size: 60px;
+    }
+    
+    h3 {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+// Safe Area Support
+@supports (padding-top: env(safe-area-inset-top)) {
+  ion-content {
+    --padding-top: env(safe-area-inset-top);
+    --padding-bottom: env(safe-area-inset-bottom);
+    --padding-start: env(safe-area-inset-left);
+    --padding-end: env(safe-area-inset-right);
+  }
+}
