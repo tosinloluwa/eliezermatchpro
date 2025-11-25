@@ -3,7 +3,7 @@
     <ion-title>Dashboard</ion-title>
     <ion-buttons slot="end">
       <!-- Messages Notification Button -->
-      <ion-button (click)="openMessagesModal()" fill="clear" class="messages-btn">
+      <ion-button *ngIf="!isPendingApproval()" (click)="openMessagesModal()" fill="clear" class="messages-btn">
         <ion-icon name="mail-outline" slot="icon-only"></ion-icon>
         <ion-badge *ngIf="getUnreadCount() > 0" color="danger" class="notification-badge">
           {{ getUnreadCount() }}
@@ -27,8 +27,27 @@
       {{ errorMessage }}
     </div>
 
-    <!-- Main Dashboard Content -->
-    <div *ngIf="dashboardData && !isLoading" class="dashboard-content">
+    <!-- Pending Approval Screen (Non-Admin) -->
+    <div *ngIf="dashboardData && isPendingApproval() && !isLoading" class="pending-approval-container">
+      <div class="pending-icon">
+        <ion-icon name="time" size="large"></ion-icon>
+      </div>
+      <h2>Account Pending Approval</h2>
+      <p class="pending-message">
+        Thank you for registering with Eliezer Match Pro! Your account is currently pending approval.
+      </p>
+      <p class="pending-message">
+        You will receive access to the platform once your account has been reviewed and approved after due payments. 
+        The payment details have been sent to your email.
+      </p>
+      <ion-button (click)="logout()" expand="block" color="danger" class="logout-btn-pending">
+        <ion-icon name="log-out" slot="start"></ion-icon>
+        Logout
+      </ion-button>
+    </div>
+
+    <!-- Main Dashboard Content (Active Users Only) -->
+    <div *ngIf="dashboardData && !isLoading && !isPendingApproval()" class="dashboard-content">
       
       <!-- Welcome Section -->
       <div class="welcome-card">
@@ -41,7 +60,7 @@
           <span>You are paired with {{ getPairedWithName() }}</span>
         </div>
         
-        <div class="action-buttons">
+        <div class="action-buttons" *ngIf="!isAdmin()">
           <ion-button (click)="openModal()" class="primary-action-btn" expand="block">
             {{ (dashboardData.responses && dashboardData.responses.length > 0) ? 'Update' : 'Complete' }} Questionnaire
           </ion-button>
@@ -58,8 +77,40 @@
         </div>
       </div>
 
-      <!-- Your Response Section -->
-      <div *ngIf="dashboardData.responses && dashboardData.responses.length > 0" class="section-card">
+      <!-- Admin Stats Cards -->
+      <div *ngIf="isAdmin()" class="stats-grid">
+        <div class="stat-card active-stat">
+          <div class="stat-icon">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </div>
+          <h3>Active Users</h3>
+          <div class="value">{{ getActiveUsersCount() }}</div>
+        </div>
+        <div class="stat-card pending-stat">
+          <div class="stat-icon">
+            <ion-icon name="time"></ion-icon>
+          </div>
+          <h3>Pending Approval</h3>
+          <div class="value">{{ getPendingUsersCount() }}</div>
+        </div>
+        <div class="stat-card responses-stat">
+          <div class="stat-icon">
+            <ion-icon name="clipboard"></ion-icon>
+          </div>
+          <h3>Questionnaire Responses</h3>
+          <div class="value">{{ dashboardData.responses?.length || 0 }}</div>
+        </div>
+        <div class="stat-card pairs-stat">
+          <div class="stat-icon">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+          <h3>Active Pairs</h3>
+          <div class="value">{{ getTotalPairs() }}</div>
+        </div>
+      </div>
+
+      <!-- Your Response Section (Non-Admin) -->
+      <div *ngIf="!isAdmin() && dashboardData.responses && dashboardData.responses.length > 0" class="section-card">
         <h3 class="section-title">Your Questionnaire Response</h3>
         <div class="response-card" *ngFor="let response of dashboardData.responses">
           <div class="response-header">
@@ -93,15 +144,59 @@
           </ion-badge>
         </h3>
         
+        <!-- Status Filter Tabs -->
+        <div class="filter-tabs">
+          <ion-button 
+            [fill]="currentFilter === 'all' ? 'solid' : 'outline'" 
+            (click)="filterUsers('all')" 
+            size="small">
+            All Users
+          </ion-button>
+          <ion-button 
+            [fill]="currentFilter === 'active' ? 'solid' : 'outline'" 
+            (click)="filterUsers('active')" 
+            size="small"
+            color="success">
+            Active ({{ getActiveUsersCount() }})
+          </ion-button>
+          <ion-button 
+            [fill]="currentFilter === 'pending' ? 'solid' : 'outline'" 
+            (click)="filterUsers('pending')" 
+            size="small"
+            color="warning">
+            Pending ({{ getPendingUsersCount() }})
+          </ion-button>
+          <ion-button 
+            [fill]="currentFilter === 'rejected' ? 'solid' : 'outline'" 
+            (click)="filterUsers('rejected')" 
+            size="small"
+            color="danger">
+            Rejected ({{ getRejectedUsersCount() }})
+          </ion-button>
+        </div>
+        
         <div class="users-grid">
-          <div class="user-card" *ngFor="let profile of dashboardData.all_user_profiles" [class.paired-card]="isPairedUser(profile)">
+          <div class="user-card" 
+               *ngFor="let profile of getFilteredUsers()" 
+               [class.paired-card]="isPairedUser(profile)"
+               [class.pending-card]="profile.user_status === 'pending'"
+               [class.rejected-card]="profile.user_status === 'rejected'">
             <div class="user-card-header">
               <div class="user-avatar">{{ profile.display_name.charAt(0).toUpperCase() }}</div>
               <div class="user-info">
                 <h4>{{ profile.display_name }}</h4>
                 <p class="user-role">{{ profile.roles.join(', ') }}</p>
-                <ion-badge *ngIf="isPairedUser(profile)" color="success" class="paired-badge">
+                <ion-badge 
+                  *ngIf="isPairedUser(profile)" 
+                  color="success" 
+                  class="paired-badge">
                   <ion-icon name="heart"></ion-icon> Paired
+                </ion-badge>
+                <ion-badge 
+                  [color]="profile.user_status === 'active' ? 'success' : profile.user_status === 'pending' ? 'warning' : 'danger'" 
+                  [class]="getUserStatusBadgeClass(profile.user_status)">
+                  <ion-icon [name]="getUserStatusIcon(profile.user_status)"></ion-icon> 
+                  {{ profile.user_status | titlecase }}
                 </ion-badge>
               </div>
             </div>
@@ -113,8 +208,40 @@
               Paired with {{ profile.paired_with.display_name }}
             </p>
             
-            <!-- Action Buttons -->
-            <div class="user-actions">
+            <!-- Approval Action Buttons -->
+            <div class="user-actions approval-actions" *ngIf="profile.user_status === 'pending'">
+              <ion-button 
+                (click)="approveUser(profile.ID, profile.display_name)" 
+                expand="block" 
+                size="small" 
+                color="success">
+                <ion-icon name="checkmark" slot="start"></ion-icon>
+                Approve
+              </ion-button>
+              <ion-button 
+                (click)="rejectUser(profile.ID, profile.display_name)" 
+                expand="block" 
+                size="small" 
+                color="danger">
+                <ion-icon name="close" slot="start"></ion-icon>
+                Reject
+              </ion-button>
+            </div>
+            
+            <!-- Reactivate Button for Rejected Users -->
+            <div class="user-actions" *ngIf="profile.user_status === 'rejected'">
+              <ion-button 
+                (click)="approveUser(profile.ID, profile.display_name)" 
+                expand="block" 
+                size="small" 
+                color="success">
+                <ion-icon name="refresh" slot="start"></ion-icon>
+                Reactivate
+              </ion-button>
+            </div>
+            
+            <!-- Active User Action Buttons -->
+            <div class="user-actions" *ngIf="profile.user_status === 'active'">
               <ion-button (click)="openModal(undefined, profile.ID)" expand="block" size="small" fill="outline">
                 <ion-icon name="eye" slot="start"></ion-icon>
                 View Profile
@@ -126,7 +253,7 @@
               </ion-button>
               
               <ion-button 
-                *ngIf="!isPairedUser(profile) && !profile.roles.includes('administrator')" 
+                *ngIf="canPairUser(profile)" 
                 (click)="openPairModal(profile.ID, profile.display_name)" 
                 expand="block" 
                 size="small" 
@@ -143,6 +270,16 @@
                 color="danger">
                 <ion-icon name="close-circle" slot="start"></ion-icon>
                 Unpair
+              </ion-button>
+              
+              <ion-button 
+                (click)="deactivateUser(profile.ID, profile.display_name)" 
+                expand="block" 
+                size="small" 
+                color="danger"
+                fill="outline">
+                <ion-icon name="ban" slot="start"></ion-icon>
+                Deactivate
               </ion-button>
             </div>
           </div>
@@ -194,7 +331,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- CHAT MODAL – UPGRADED WITH RED PAPER-PLANE & PROPER FOOTER -->
+    <!-- CHAT MODAL -->
     <ion-modal [isOpen]="isChatModalOpen" (didDismiss)="closeChatModal()">
       <ng-template>
         <ion-header>
@@ -255,7 +392,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- PAIR MODAL – CLEAN, DARK, AND BEAUTIFUL -->
+    <!-- PAIR MODAL -->
     <ion-modal [isOpen]="isPairModalOpen" (didDismiss)="closePairModal()">
       <ng-template>
         <ion-header>
@@ -307,7 +444,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Questionnaire/Response Details Modal – 100% UNCHANGED -->
+    <!-- Questionnaire/Response Details Modal -->
     <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
       <ng-template>
         <ion-header>

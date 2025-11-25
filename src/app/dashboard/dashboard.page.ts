@@ -59,6 +59,8 @@ interface DashboardData {
     user_email: string;
     roles: string[];
   };
+  user_status: string;
+  is_pending_approval: boolean;
   unread_count: number;
   is_paired: boolean;
   paired_with: PairedUser | null;
@@ -71,8 +73,12 @@ interface DashboardData {
     is_paired: boolean;
     pair_info?: { id: number; paired_at: string };
     paired_with?: { ID: number; display_name: string };
+    user_status: string;
   }>;
   total_pairs?: number;
+  active_users_count?: number;
+  pending_users_count?: number;
+  rejected_users_count?: number;
 }
 
 @Component({
@@ -122,6 +128,9 @@ export class DashboardPage implements OnInit, OnDestroy {
   pairUserId: number = 0;
   pairUserName: string = '';
   selectedPairWith: number = 0;
+
+  // Filter state
+  currentFilter: string = 'all';
 
   private apiUrl: string = environment.apiUrl;
 
@@ -178,6 +187,130 @@ export class DashboardPage implements OnInit, OnDestroy {
   logout() {
     localStorage.removeItem('auth_token');
     this.router.navigate(['/login']);
+  }
+
+  // ===== USER APPROVAL METHODS (ADMIN ONLY) =====
+  async approveUser(userId: number, userName: string) {
+    const alert = await this.alertController.create({
+      header: 'Approve User',
+      message: `Approve ${userName}?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Approve',
+          handler: () => {
+            this.updateUserStatus(userId, 'active');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async rejectUser(userId: number, userName: string) {
+    const alert = await this.alertController.create({
+      header: 'Reject User',
+      message: `Reject ${userName}?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Reject',
+          handler: () => {
+            this.updateUserStatus(userId, 'rejected');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deactivateUser(userId: number, userName: string) {
+    const alert = await this.alertController.create({
+      header: 'Deactivate User',
+      message: `Deactivate ${userName}?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Deactivate',
+          handler: () => {
+            this.updateUserStatus(userId, 'rejected');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  updateUserStatus(userId: number, status: string) {
+    const body = {
+      user_id: userId,
+      status: status
+    };
+
+    this.http.post<any>(`${this.apiUrl}api_user_approval.php?action=update_status`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.presentAlert('Success', 'User status updated successfully!');
+            this.loadDashboard();
+          } else {
+            this.presentAlert('Error', response.error || 'Failed to update user status');
+          }
+        },
+        error: (error) => {
+          console.error('Failed to update user status:', error);
+          this.presentAlert('Error', error.error?.error || 'Failed to update user status');
+        }
+      });
+  }
+
+  // ===== FILTER METHODS =====
+  filterUsers(status: string) {
+    this.currentFilter = status;
+  }
+
+  getFilteredUsers() {
+    if (!this.dashboardData?.all_user_profiles) return [];
+    
+    if (this.currentFilter === 'all') {
+      return this.dashboardData.all_user_profiles;
+    }
+    
+    return this.dashboardData.all_user_profiles.filter(
+      user => user.user_status === this.currentFilter
+    );
+  }
+
+  // ===== STATUS HELPER METHODS =====
+  getUserStatusBadgeClass(status: string): string {
+    if (status === 'active') return 'active-badge';
+    if (status === 'pending') return 'pending-badge';
+    if (status === 'rejected') return 'rejected-badge';
+    return '';
+  }
+
+  getUserStatusIcon(status: string): string {
+    if (status === 'active') return 'checkmark-circle';
+    if (status === 'pending') return 'time';
+    if (status === 'rejected') return 'close-circle';
+    return 'person';
+  }
+
+  canMessageUser(user: any): boolean {
+    return user.user_status === 'active';
+  }
+
+  canPairUser(user: any): boolean {
+    return !user.is_paired && user.user_status === 'active' && !user.roles.includes('administrator');
   }
 
   // ===== QUESTIONNAIRE METHODS =====
@@ -456,6 +589,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     
     return this.dashboardData.all_user_profiles.filter(user => 
       !user.is_paired && 
+      user.user_status === 'active' &&
       !user.roles.includes('administrator') &&
       user.ID !== this.pairUserId
     );
@@ -463,6 +597,10 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   isAdmin(): boolean {
     return this.dashboardData?.current_user.roles.includes('administrator') || false;
+  }
+
+  isPendingApproval(): boolean {
+    return this.dashboardData?.is_pending_approval || false;
   }
 
   // Helper methods for template
@@ -480,6 +618,18 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   getTotalPairs(): number {
     return this.dashboardData?.total_pairs || 0;
+  }
+
+  getActiveUsersCount(): number {
+    return this.dashboardData?.active_users_count || 0;
+  }
+
+  getPendingUsersCount(): number {
+    return this.dashboardData?.pending_users_count || 0;
+  }
+
+  getRejectedUsersCount(): number {
+    return this.dashboardData?.rejected_users_count || 0;
   }
 
   isPairedUser(profile: any): boolean {
