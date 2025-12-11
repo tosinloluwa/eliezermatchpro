@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -134,12 +134,13 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   private apiUrl: string = environment.apiUrl;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private modalController: ModalController,
-    private alertController: AlertController
-  ) {}
+constructor(
+  private http: HttpClient,
+  private router: Router,
+  private modalController: ModalController,
+  private alertController: AlertController,
+  private cdr: ChangeDetectorRef // <--- ADD THIS LINE
+) {}
 
   ngOnInit() {
     this.loadDashboard();
@@ -315,21 +316,25 @@ export class DashboardPage implements OnInit, OnDestroy {
     return !user.is_paired && user.user_status === 'active' && !user.roles.includes('administrator');
   }
 
-  // ===== QUESTIONNAIRE METHODS =====
-  openModal(userId?: number | null, profileId?: number) {
+// Locate this method in dashboard.page.ts
+
+openModal(userId?: number | null, profileId?: number) {
     if (userId && this.dashboardData?.responses) {
       this.selectedResponse = this.dashboardData.responses.find(r => r.id === userId) || null;
       this.isModalOpen = true;
+      this.cdr.detectChanges(); // <--- ADD THIS LINE
     } else if (profileId && this.dashboardData?.responses) {
       const userResponse = this.dashboardData.responses.find(r => r.user_id === profileId);
       this.selectedResponse = userResponse || null;
       this.isModalOpen = true;
+      this.cdr.detectChanges(); // <--- ADD THIS LINE
     } else {
       this.selectedResponse = null;
       this.currentStep = 0;
       this.isModalOpen = true;
+      this.cdr.detectChanges(); // <--- ADD THIS LINE (Fixes the button click)
     }
-  }
+}
 
   closeModal() {
     this.isModalOpen = false;
