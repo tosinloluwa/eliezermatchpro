@@ -433,7 +433,7 @@ ion-button[fill="outline"] {
 // Modal Styling
 ion-modal {
   --background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+
   
   ion-header {
     --background: rgba(74, 74, 74, 0.95);
@@ -1057,7 +1057,6 @@ ion-modal {
 }
 ion-modal {
   --background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
   z-index: 10000; // Lower than alert (99999)
   
   ion-header {
