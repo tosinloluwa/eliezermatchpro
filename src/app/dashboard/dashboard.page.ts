@@ -7,7 +7,6 @@
   import { IonicModule } from '@ionic/angular';
   import { lastValueFrom } from 'rxjs';
   import { environment } from '../../environments/environment';
-
  import { QuestionnaireModalComponent } from '../components/questionnaire-modal/questionnaire-modal.component';
 import { MessagesModalComponent } from '../components/messages-modal/messages-modal.component';
 import { ChatModalComponent } from '../components/chat-modal/chat-modal.component';
