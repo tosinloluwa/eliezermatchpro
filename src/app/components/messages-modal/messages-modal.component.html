@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Messages</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div *ngIf="conversations.length === 0" class="empty-state">
+    <ion-icon name="mail-open-outline" class="empty-icon"></ion-icon>
+    <p>No messages yet</p>
+  </div>
+
+  <ion-list *ngIf="conversations.length > 0">
+    <ion-item 
+      button 
+      *ngFor="let conv of conversations" 
+      (click)="onConversationClick(conv)"
+      lines="full"
+      class="conversation-item">
+      
+      <ion-avatar slot="start">
+        <div class="avatar-placeholder">
+          {{ conv.user_name.charAt(0).toUpperCase() }}
+        </div>
+      </ion-avatar>
+
+      <ion-label>
+        <h2>{{ conv.user_name }}</h2>
+        <p class="last-message">
+          {{ conv.last_message.length > 50 ? (conv.last_message | slice:0:50) + '...' : conv.last_message }}
+        </p>
+        <p class="message-time">{{ formatTime(conv.last_time) }}</p>
+      </ion-label>
+
+      <ion-badge *ngIf="conv.unread > 0" color="danger" slot="end">
+        {{ conv.unread }}
+      </ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

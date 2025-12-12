@@ -1,0 +1,59 @@
+// src/app/components/pair-modal/pair-modal.component.scss
+
+// Copied from original dashboard.page.scss (PAIR MODAL styles)
+.pair-content {
+  --background: #1e1e1e !important;  // Solid dark background to fix transparency
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.pair-info {
+  text-align: center;
+  padding: 30px 20px 20px;
+  
+  ion-icon {
+    font-size: 60px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+  }
+}
+
+.modal-actions {
+  padding: 20px;
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+ion-select {
+  --color: #ffffff;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+}
+
+// Alert for dark mode (copied)
+.alert-wrapper.sc-ion-alert-md {
+  background: #000000e3;
+}
+
+// Modal overlay (copied)
+ion-modal {
+  --background: rgba(0, 0, 0, 0.85);
+  // backdrop-filter: blur(8px);  // Comment out if causing transparency/render issues on Android
+} 

@@ -1,0 +1,90 @@
+ 
+// src/app/components/questionnaire-modal/questionnaire-modal.component.scss
+
+// Copied from original dashboard.page.scss (relevant modal styles)
+.modal-content-wrapper {
+  --background: #1e1e1e !important;  // Solid dark background to fix transparency
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.form-step {
+  display: none;  // Hide all steps
+}
+
+.form-step.active {
+  display: block;  // Show active step
+}
+
+// Navigation buttons (from original form-navigation)
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.step-indicator {
+  font-size: 0.9rem;
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+// Detail sections (for response view)
+.response-details {
+  color: #ffffff;
+}
+
+.detail-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.detail-section {
+  margin-bottom: 30px;
+}
+
+.detail-item {
+  margin-bottom: 15px;
+}
+
+.detail-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #ff5c5c;
+}
+
+.detail-item p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+// Form items
+ion-item {
+  --background: rgba(255, 255, 255, 0.05);
+  --border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+ion-label {
+  color: #ffffff !important;
+}
+
+ion-textarea {
+  --color: #ffffff;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+}
+
+// Alert for dark mode (copied)
+.alert-wrapper {
+  background: #000000e3 !important;
+}
+
+// Modal overlay (copied, but adjusted for no blur if causing issues)
+ion-modal {
+  --background: rgba(0, 0, 0, 0.85);
+  // backdrop-filter: blur(8px);  // Comment out if causing transparency/render issues on Android
+}

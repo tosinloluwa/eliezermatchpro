@@ -1,0 +1,162 @@
+<!-- src/app/components/questionnaire-modal/questionnaire-modal.component.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ response ? 'Response Details' : 'Complete Questionnaire' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content-wrapper">
+  <div class="modal-content">
+
+    <!-- View Response Details -->
+    <div *ngIf="response" class="response-details">
+      <div class="detail-header">
+        <h3>{{ response.display_name }}'s Response</h3>
+        <p>{{ response.user_email }}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Faith & Spirituality</h4>
+        <div class="detail-item"><strong>Role of God:</strong><p>{{ response.role_of_god }}</p></div>
+        <div class="detail-item"><strong>Christ-Centered Marriage:</strong><p>{{ response.christ_centered_marriage }}</p></div>
+        <div class="detail-item"><strong>Relationship with Christ:</strong><p>{{ response.relationship_with_christ }}</p></div>
+        <div class="detail-item"><strong>Bible Study Frequency:</strong><p>{{ response.bible_study_frequency }}</p></div>
+      </div>
+      <div class="detail-section">
+        <h4>Marriage & Commitment</h4>
+        <div class="detail-item"><strong>Commitment Definition:</strong><p>{{ response.commitment_definition }}</p></div>
+        <div class="detail-item"><strong>Key Marriage Components:</strong><p>{{ response.key_marriage_components }}</p></div>
+        <div class="detail-item"><strong>Marriage Goals:</strong><p>{{ response.marriage_goals }}</p></div>
+        <div class="detail-item"><strong>Marriage Readiness:</strong><p>{{ response.marriage_readiness }}</p></div>
+      </div>
+      <div class="detail-section">
+        <h4>Family & Values</h4>
+        <div class="detail-item"><strong>Raising Children:</strong><p>{{ response.raising_children }}</p></div>
+        <div class="detail-item"><strong>Financial Approach:</strong><p>{{ response.financial_approach }}</p></div>
+        <div class="detail-item"><strong>Spiritual Differences:</strong><p>{{ response.spiritual_differences }}</p></div>
+      </div>
+      <div class="detail-section">
+        <h4>Conflict & Personal</h4>
+        <div class="detail-item"><strong>Conflict Resolution:</strong><p>{{ response.conflict_resolution }}</p></div>
+        <div class="detail-item"><strong>Approach to Forgiveness:</strong><p>{{ response.approach_forgiveness }}</p></div>
+        <div class="detail-item"><strong>Qualities in Spouse:</strong><p>{{ response.qualities_in_spouse }}</p></div>
+      </div>
+    </div>
+
+    <!-- Questionnaire Form -->
+    <form *ngIf="!response" class="questionnaire-form">
+
+      <!-- Step 1 -->
+      <div class="form-step" [class.active]="currentStep === 0">
+        <h3 class="step-title">Step 1: Faith & God</h3>
+        <ion-item>
+          <ion-label position="stacked">What role does God play in your life?</ion-label>
+          <ion-textarea [(ngModel)]="formData.role_of_god" name="role_of_god" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">What does a Christ-centered marriage mean to you?</ion-label>
+          <ion-textarea [(ngModel)]="formData.christ_centered_marriage" name="christ_centered_marriage" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="form-step" [class.active]="currentStep === 1">
+        <h3 class="step-title">Step 2: Commitment & Marriage</h3>
+        <ion-item>
+          <ion-label position="stacked">How do you define commitment in a relationship?</ion-label>
+          <ion-textarea [(ngModel)]="formData.commitment_definition" name="commitment_definition" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">What are the key components of a successful marriage?</ion-label>
+          <ion-textarea [(ngModel)]="formData.key_marriage_components" name="key_marriage_components" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form-step" [class.active]="currentStep === 2">
+        <h3 class="step-title">Step 3: Spiritual Life</h3>
+        <ion-item>
+          <ion-label position="stacked">Describe your relationship with Christ</ion-label>
+          <ion-textarea [(ngModel)]="formData.relationship_with_christ" name="relationship_with_christ" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">How often do you engage in Bible study?</ion-label>
+          <ion-textarea [(ngModel)]="formData.bible_study_frequency" name="bible_study_frequency" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="form-step" [class.active]="currentStep === 3">
+        <h3 class="step-title">Step 4: Practical Matters</h3>
+        <ion-item>
+          <ion-label position="stacked">What is your approach to finances in marriage?</ion-label>
+          <ion-textarea [(ngModel)]="formData.financial_approach" name="financial_approach" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">How would you handle spiritual differences?</ion-label>
+          <ion-textarea [(ngModel)]="formData.spiritual_differences" name="spiritual_differences" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="form-step" [class.active]="currentStep === 4">
+        <h3 class="step-title">Step 5: Goals & Family</h3>
+        <ion-item>
+          <ion-label position="stacked">What are your goals for marriage?</ion-label>
+          <ion-textarea [(ngModel)]="formData.marriage_goals" name="marriage_goals" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">What are your views on raising children?</ion-label>
+          <ion-textarea [(ngModel)]="formData.raising_children" name="raising_children" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="form-step" [class.active]="currentStep === 5">
+        <h3 class="step-title">Step 6: Conflict & Forgiveness</h3>
+        <ion-item>
+          <ion-label position="stacked">How do you approach conflict resolution?</ion-label>
+          <ion-textarea [(ngModel)]="formData.conflict_resolution" name="conflict_resolution" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">What is your approach to forgiveness?</ion-label>
+          <ion-textarea [(ngModel)]="formData.approach_forgiveness" name="approach_forgiveness" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="form-step" [class.active]="currentStep === 6">
+        <h3 class="step-title">Step 7: Final Questions</h3>
+        <ion-item>
+          <ion-label position="stacked">What qualities are you looking for in a spouse?</ion-label>
+          <ion-textarea [(ngModel)]="formData.qualities_in_spouse" name="qualities_in_spouse" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">How do you know you're ready for marriage?</ion-label>
+          <ion-textarea [(ngModel)]="formData.marriage_readiness" name="marriage_readiness" rows="4" placeholder="Share your thoughts..."></ion-textarea>
+        </ion-item>
+      </div>
+
+      <!-- Navigation -->
+      <div class="form-navigation">
+        <ion-button *ngIf="currentStep > 0" (click)="prevStep()" class="prev-step">
+          Previous
+        </ion-button>
+        <div class="step-indicator">
+          Step {{ currentStep + 1 }} of {{ steps }}
+        </div>
+        <ion-button *ngIf="currentStep < steps - 1" (click)="nextStep()" class="next-step">
+          Next
+        </ion-button>
+        <ion-button *ngIf="currentStep === steps - 1" (click)="submitForm()" class="submit-btn">
+          Submit
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+</ion-content>

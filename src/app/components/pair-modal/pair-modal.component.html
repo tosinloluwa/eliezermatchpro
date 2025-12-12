@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pair {{ userName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="pair-content">
+  <div class="modal-content" >            
+    <div class="pair-info">
+      <ion-icon name="heart" color="danger" size="large"></ion-icon>
+      <p>Select a user to pair with <strong>{{ userName }}</strong></p>
+    </div>
+    
+    <ion-list>             
+      <ion-item >
+        <ion-label>Select Match Partner</ion-label>
+        <ion-select [(ngModel)]="selectedPairWith" placeholder="Choose a user..." >
+          <ion-select-option  
+            *ngFor="let user of availableUsers" 
+            [value]="user.ID">
+            {{ user.display_name }} ({{ user.user_email }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+    <div class="modal-actions" >
+      <ion-button (click)="close()" fill="outline" expand="block">
+        Cancel
+      </ion-button>
+      <ion-button 
+        (click)="createPair()" 
+        color="danger" 
+        expand="block"
+        [disabled]="!selectedPairWith">
+        <ion-icon name="heart" slot="start"></ion-icon>
+        Create Pair
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

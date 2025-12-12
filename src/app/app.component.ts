@@ -5,6 +5,27 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { Dialogs } from '@awesome-cordova-plugins/dialogs/ngx';
 
+import { addIcons } from 'ionicons';
+import { close, heart, checkmarkCircle, time, closeCircle, mailOutline, chatbubbles, trash, eye, mail, heartOutline, refresh, ban, clipboard, person } from 'ionicons/icons';
+
+addIcons({
+  close,
+  heart,
+  'checkmark-circle': checkmarkCircle,
+  time,
+  'close-circle': closeCircle,
+  'mail-outline': mailOutline,
+  chatbubbles,
+  trash,
+  eye,
+  mail,
+  'heart-outline': heartOutline,
+  refresh,
+  ban,
+  clipboard,
+  person
+});
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

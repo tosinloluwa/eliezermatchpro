@@ -1092,3 +1092,257 @@ ion-modal {
     font-size: 18px;
   }
 }
+
+/* Stats Grid Styling */
+.stats-grid-container {
+  padding: 0 0 20px 0; // Padding below the grid
+}
+
+.stat-card {
+  --background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: var(--ion-color-light);
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 5px solid transparent; /* Base for status color */
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  }
+
+  ion-card-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0;
+  }
+
+  ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ion-color-medium);
+  }
+
+  ion-card-content {
+    padding-top: 0;
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    
+    ion-icon {
+      vertical-align: middle;
+    }
+  }
+
+  .value {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 5px;
+  }
+}
+
+/* Color Overrides for Stat Cards */
+.active-stat {
+  border-left-color: var(--ion-color-success);
+  .value { color: var(--ion-color-success); }
+  .active-icon { color: var(--ion-color-success); }
+}
+
+.pending-stat {
+  border-left-color: var(--ion-color-warning);
+  .value { color: var(--ion-color-warning); }
+  .pending-icon { color: var(--ion-color-warning); }
+}
+
+.responses-stat {
+  border-left-color: var(--ion-color-primary);
+  .value { color: var(--ion-color-primary); }
+  .responses-icon { color: var(--ion-color-primary); }
+}
+
+.pairs-stat {
+  border-left-color: var(--ion-color-tertiary);
+  .value { color: var(--ion-color-tertiary); }
+  .pairs-icon { color: var(--ion-color-tertiary); }
+}
+
+/* --- Header Styling --- */
+ion-header {
+  // Use a slightly translucent dark background with a blur for a modern "glassmorphism" effect
+  --background: rgba(74, 74, 74, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  
+  // Remove the default Ionic bottom line for a cleaner look
+  &::after {
+    display: none;
+  }
+}
+
+ion-toolbar {
+  --background: transparent; // Ensure toolbar inherits the header background
+  --color: var(--ion-color-light); // Title and buttons text color
+}
+
+ion-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+// --- Buttons and Notifications ---
+ion-buttons {
+  ion-button {
+    font-weight: 600;
+    color: var(--ion-color-light);
+    
+    // Slight hover effect
+    &:hover {
+      --background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.messages-btn {
+  position: relative;
+  
+  // Styling for the badge over the icon
+  .notification-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    line-height: 18px;
+    border-radius: 9px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    z-index: 10;
+  }
+}
+
+/* --- Header Styling (Ensures consistency for ALL user roles) --- */
+ion-header {
+  // Use a modern, slightly transparent dark background with blur
+  --background: rgba(40, 40, 40, 0.95); // Darker base color
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); // Stronger shadow for depth
+  
+  // Explicitly remove the default Ionic bottom border
+  &::after {
+    display: none;
+    background-image: none !important;
+  }
+}
+
+ion-toolbar {
+  --background: transparent; // Ensure toolbar inherits the header background
+  --color: var(--ion-color-light); // Title and buttons text color
+  padding: 0 5px; // Reduced horizontal padding for a sleek look
+}
+
+ion-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--ion-color-light);
+  padding-inline: 10px; // Ensure title has space
+}
+
+// --- Buttons and Notifications ---
+ion-buttons {
+  ion-button {
+    font-weight: 600;
+    color: var(--ion-color-medium-tint); // Slightly lighter than text for icons/clear buttons
+    transition: color 0.2s ease, background-color 0.2s ease;
+    
+    // Hover/Active state
+    &:hover {
+      color: var(--ion-color-light);
+    }
+    --ripple-color: var(--ion-color-light-shade);
+  }
+}
+
+.messages-btn {
+  position: relative;
+  
+  // Styling for the badge over the icon
+  .notification-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    min-width: 18px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 9px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    z-index: 10;
+    color: var(--ion-color-light); // White text on danger background
+    background: var(--ion-color-danger);
+  }
+}
+
+// Ensure the logout button is visually distinct if needed
+ion-button[ng-reflect-router-link="/login"] {
+  // You can add specific styling here if you want the logout button to look different
+  color: var(--ion-color-danger-tint); 
+}
+
+/* --- Header Styling (Ensures consistency for ALL user roles) --- */
+ion-header {
+  --background: rgba(40, 40, 40, 0.95); 
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); 
+  
+  &::after {
+    display: none;
+    background-image: none !important;
+  }
+}
+
+ion-toolbar {
+  --background: transparent;
+  --color: var(--ion-color-light); 
+  padding: 0 5px; 
+}
+
+ion-title {
+  // Removed: --text-align: start; 
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--ion-color-light);
+  // Padding is now handled by the slot="start" placement
+}
+
+// Updated SCSS in dashboard.page.scss
+ion-toolbar {
+  --background: rgba(74, 74, 74, 0.95);
+  --color: #ffffff;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
+  --border-width: 0;
+    
+  ion-title {
+    // This variable forces the content inside the title to align to the left
+    --text-align: start; 
+    
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+  }
+  
+  // ... rest of ion-toolbar content ...
+}
