@@ -97,9 +97,6 @@ import { PairModalComponent } from '../components/pair-modal/pair-modal.componen
     dashboardData: DashboardData | null = null;
     errorMessage: string = '';
     isLoading: boolean = false;
-
-      debugMode: boolean = true;
-      debugLogs: Array<{time: string, message: string, type: string}> = [];
     
     conversations: Conversation[] = [];
     messages: Message[] = [];
@@ -307,52 +304,36 @@ async loadDashboard(): Promise<void> {
       return !user.is_paired && user.user_status === 'active' && !user.roles.includes('administrator');
     }
 
-async openModal(userId?: number | null, profileId?: number) {
-  this.debugLog('=== MODAL DEBUG START ===', 'info');
-  this.debugLog(`userId=${userId}, profileId=${profileId}`, 'info');
-  this.debugLog(`ModalController: ${!!this.modalController}`, 'info');
-  
-  try {
-    let componentProps: any = {};
+    async openModal(userId?: number | null, profileId?: number) {
+      console.log('openModal called.');
+      let componentProps: any = {};
 
-    if (userId && this.dashboardData?.responses) {
-      componentProps.response = this.dashboardData.responses.find(r => r.id === userId) || null;
-      this.debugLog('Found response for userId', 'info');
-    } else if (profileId && this.dashboardData?.responses) {
-      const userResponse = this.dashboardData.responses.find(r => r.user_id === profileId);
-      componentProps.response = userResponse || null;
-      this.debugLog('Found response for profileId', 'info');
-    } else {
-      this.debugLog('New questionnaire', 'info');
-      componentProps.response = null;
-      componentProps.currentStep = 0;
-    }
-
-    this.debugLog('Creating modal...', 'info');
-    
-    const modal = await this.modalController.create({
-      component: QuestionnaireModalComponent,
-      componentProps,
-      cssClass: 'auto-height-modal'
-    });
-
-    this.debugLog('Modal created!', 'success');
-
-    modal.onDidDismiss().then((result) => {
-      this.debugLog('Modal dismissed', 'info');
-      if (result.data?.submitted) {
-        this.loadDashboard();
+      if (userId && this.dashboardData?.responses) {
+        componentProps.response = this.dashboardData.responses.find(r => r.id === userId) || null;
+      } else if (profileId && this.dashboardData?.responses) {
+        const userResponse = this.dashboardData.responses.find(r => r.user_id === profileId);
+        componentProps.response = userResponse || null;
+      } else {
+        console.log('Opening Questionnaire Modal.');
+        componentProps.response = null;
+        componentProps.currentStep = 0;
       }
-    });
 
-    this.debugLog('Presenting modal...', 'info');
-    await modal.present();
-    this.debugLog('Modal presented!', 'success');
-    
-  } catch (error: any) {
-    this.debugLog(`ERROR: ${error.message}`, 'error');
-  }
-}
+      const modal = await this.modalController.create({
+        component: QuestionnaireModalComponent,
+        componentProps,
+        cssClass: 'auto-height-modal'
+      });
+
+      modal.onDidDismiss().then((result) => {
+        if (result.data?.submitted) {
+          this.loadDashboard();
+        }
+      });
+
+      await modal.present();
+      console.log('Modal presented, isOpen should be true internally.');
+    }
 
 async openMessagesModal() {
   this.loadConversations();  // ← ADD THIS
@@ -709,27 +690,4 @@ async openPairModal(userId: number, userName: string) {
       });
       await alert.present();
     }
-  
-  private debugLog(message: string, type: 'info' | 'error' | 'success' = 'info') {
-    const timestamp = new Date().toLocaleTimeString();
-    this.debugLogs.unshift({
-      time: timestamp,
-      message: message,
-      type: type
-    });
-    
-    if (this.debugLogs.length > 50) {
-      this.debugLogs.pop();
-    }
-    
-    console.log(`[${timestamp}] ${message}`);
   }
-
-  clearDebugLogs() {
-    this.debugLogs = [];
-  }
-  
-  
-  }
-
-  

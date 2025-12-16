@@ -1,3 +1,4 @@
+// src/app/app.component.ts
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonApp, IonRouterOutlet, IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem } from '@ionic/angular/standalone';
@@ -6,8 +7,13 @@ import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { Dialogs } from '@awesome-cordova-plugins/dialogs/ngx';
 
 import { addIcons } from 'ionicons';
-import { close, heart, checkmarkCircle, time, closeCircle, mailOutline, chatbubbles, trash, eye, mail, heartOutline, refresh, ban, clipboard, person } from 'ionicons/icons';
+import { 
+  close, heart, checkmarkCircle, time, closeCircle, 
+  mailOutline, chatbubbles, trash, eye, mail, 
+  heartOutline, refresh, ban, clipboard, person 
+} from 'ionicons/icons';
 
+// Register all icons (you already had this — kept exactly)
 addIcons({
   close,
   heart,
@@ -26,6 +32,12 @@ addIcons({
   person
 });
 
+// ADD THESE 4 IMPORTS — THIS IS THE FINAL FIX FOR MODALS ON REAL ANDROID
+import { QuestionnaireModalComponent } from './components/questionnaire-modal/questionnaire-modal.component';
+import { MessagesModalComponent } from './components/messages-modal/messages-modal.component';
+import { ChatModalComponent } from './components/chat-modal/chat-modal.component';
+import { PairModalComponent } from './components/pair-modal/pair-modal.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -39,12 +51,18 @@ addIcons({
     IonTitle,
     IonContent,
     IonList,
-    IonItem
+    IonItem,
+
+    // ADD THESE 4 LINES — THIS MAKES MODALS WORK ON REAL DEVICES
+    QuestionnaireModalComponent,
+    MessagesModalComponent,
+    ChatModalComponent,
+    PairModalComponent
   ],
   providers: [SplashScreen, Dialogs]
 })
 export class AppComponent {
-  @ViewChild('mainMenu') menu!: IonMenu; // Reference to the IonMenu
+  @ViewChild('mainMenu') menu!: IonMenu;
 
   constructor(
     private platform: Platform,
@@ -97,7 +115,7 @@ export class AppComponent {
     try {
       await this.router.navigate([`/${path}`]);
       console.log(`Navigated to /${path}`);
-      await this.menu.close(); // Close the menu after navigation
+      await this.menu.close();
       console.log('Menu closed');
     } catch (err) {
       console.error(`Navigation to /${path} failed:`, err);

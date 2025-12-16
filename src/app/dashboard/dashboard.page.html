@@ -16,26 +16,6 @@
 </ion-header>
 
 <ion-content>
-  <!-- DEBUG CONSOLE -->
-  <div class="debug-console" *ngIf="debugMode">
-    <div class="debug-header">
-      <strong>Debug Console</strong>
-      <ion-button size="small" (click)="clearDebugLogs()">Clear</ion-button>
-      <ion-button size="small" (click)="debugMode = false">Hide</ion-button>
-    </div>
-    <div class="debug-logs">
-      <div *ngFor="let log of debugLogs" [class]="'log-' + log.type">
-        <small>{{ log.time }}</small> {{ log.message }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Toggle Debug Button -->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!debugMode">
-    <ion-fab-button size="small" color="warning" (click)="debugMode = true">
-      <ion-icon name="bug"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
   <div class="dashboard-container">
     
     <!-- Loading Spinner -->
@@ -348,4 +328,3 @@
     </div>
   </div>
 </ion-content>
-
