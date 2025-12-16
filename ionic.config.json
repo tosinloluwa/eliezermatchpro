@@ -1,7 +1,8 @@
 {
   "name": "New Ionic App",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
