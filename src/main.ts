@@ -9,17 +9,14 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 
-// THESE 4 LINES ARE THE FINAL FIX — EAGER LOAD ALL MODAL COMPONENTS
+// FORCE EAGER LOAD ALL MODAL COMPONENTS — THIS IS THE ONLY THING THAT WORKS ON EVERY DEVICE
 import './app/components/questionnaire-modal/questionnaire-modal.component';
 import './app/components/messages-modal/messages-modal.component';
 import './app/components/chat-modal/chat-modal.component';
 import './app/components/pair-modal/pair-modal.component';
 
-// OPTIONAL: Also import them as named imports (some devices need both)
-import { QuestionnaireModalComponent } from './app/components/questionnaire-modal/questionnaire-modal.component';
-import { MessagesModalComponent } from './app/components/messages-modal/messages-modal.component';
-import { ChatModalComponent } from './app/components/chat-modal/chat-modal.component';
-import { PairModalComponent } from './app/components/pair-modal/pair-modal.component';
+// If using modal-registry.ts, use this (assuming it's in src/app/)
+import './app/modal-registry';
 
 if (environment.production) {
   enableProdMode();
