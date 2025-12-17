@@ -322,22 +322,55 @@ export class DashboardPage implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  async openMessagesModal() {
-    const modal = await this.modalController.create({
-      component: MessagesModalComponent
-    });
+async openMessagesModal() {
+  this.isLoading = true;
+  this.cdr.detectChanges(); 
 
-    await modal.present();
+  try {
+    // Wait for the data
+    await this.loadConversations();
+  } catch (error) {
+    console.error("Could not load conversations", error);
+  } finally {
+    // Stop loading and refresh UI BEFORE creating modal
+    this.isLoading = false;
+    this.cdr.detectChanges(); 
   }
 
-  async openChatModal(userId: number, userName: string) {
-    const modal = await this.modalController.create({
-      component: ChatModalComponent,
-      componentProps: { userId, userName, currentUserId: this.dashboardData?.current_user.ID }
-    });
+  const modal = await this.modalController.create({
+    component: MessagesModalComponent,
+    // Note: We removed environmentInjector here to stop the TS2345 error
+    componentProps: {
+      conversations: this.conversations,
+      openChat: async (id: number, name: string) => {
+        await modal.dismiss();
+        this.openChatModal(id, name);
+      }
+    }
+  });
 
-    await modal.present();
+  // This return MUST be inside the function
+  return await modal.present(); 
+}
+
+
+
+async openChatModal(userId: number, userName: string) {
+  if (!this.dashboardData?.current_user.ID) {
+    this.presentAlert('Error', 'User not loaded');
+    return;
   }
+
+  const modal = await this.modalController.create({
+    component: ChatModalComponent,
+    componentProps: { 
+      userId, 
+      userName, 
+      currentUserId: this.dashboardData.current_user.ID
+    }
+  });
+  await modal.present();
+}
 
   async openPairModal(userId: number, userName: string) {
     const modal = await this.modalController.create({
@@ -352,20 +385,20 @@ export class DashboardPage implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  loadConversations() {
-    this.http.get<any>(`${this.apiUrl}api_messages.php?action=conversations`, { headers: this.getHeaders() })
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.conversations = response.conversations;
-            console.log('Conversations loaded:', this.conversations);
-          }
-        },
-        error: (error) => {
-          console.error('Failed to load conversations:', error);
-        }
-      });
+async loadConversations(): Promise<void> {
+  try {
+    const response = await lastValueFrom(
+      this.http.get<any>(`${this.apiUrl}api_messages.php?action=conversations`, { headers: this.getHeaders() })
+    );
+    if (response.success) {
+      this.conversations = response.conversations;
+      console.log('Conversations loaded:', this.conversations);
+      this.cdr.detectChanges(); // Ensure the UI knows data changed
+    }
+  } catch (error) {
+    console.error('Failed to load conversations:', error);
   }
+}
 
   // ===== MESSAGING METHODS =====
   loadMessages(userId: number) {

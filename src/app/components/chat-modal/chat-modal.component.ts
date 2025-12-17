@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, of } from 'rxjs';
 
 interface Message {
   id: number;
@@ -43,8 +42,14 @@ export class ChatModalComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {}
 
   ngOnInit() {
+    console.log('ChatModal opened for userId:', this.userId, 'currentUserId:', this.currentUserId);
+    if (!this.userId || !this.currentUserId) {
+      console.error('Missing userId or currentUserId');
+      this.isLoading = false;
+      return;
+    }
     this.loadMessages();
-    this.interval = setInterval(() => this.loadMessages(), 5000);
+    this.interval = setInterval(() => this.loadMessages(), 3000); // Faster polling
   }
 
   ngOnDestroy() {
@@ -66,48 +71,58 @@ export class ChatModalComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (!this.userId) return;
 
     const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.error('No auth token');
+      this.isLoading = false;
+      return;
+    }
+
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     this.http
       .get<any>(`${this.apiUrl}api_messages.php?action=get&with=${this.userId}`, { headers })
-      .pipe(
-        catchError(err => {
+      .subscribe({
+        next: (res) => {
+          console.log('Raw API response:', res);
+          if (res.success && Array.isArray(res.messages)) {
+            const oldLength = this.messages.length;
+            this.messages = res.messages;
+            this.shouldScroll = this.messages.length > oldLength || oldLength === 0;
+            console.log('Messages loaded:', this.messages.length);
+          } else {
+            console.warn('No messages or invalid response');
+            this.messages = [];
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
           console.error('Failed to load messages:', err);
           this.isLoading = false;
-          return of({ success: false, messages: [] });
-        })
-      )
-      .subscribe(res => {
-        if (res.success) {
-          const oldLength = this.messages.length;
-          this.messages = res.messages || [];
-          this.shouldScroll = this.messages.length > oldLength;
         }
-        this.isLoading = false;
       });
   }
 
   sendMessage() {
     const msg = this.newMessage.trim();
-    if (!msg) return;
+    if (!msg || !this.userId) return;
 
     const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     const body = { to_user: this.userId, message: msg };
 
     this.http
       .post<any>(`${this.apiUrl}api_messages.php?action=send`, body, { headers })
-      .pipe(
-        catchError(err => {
-          console.error('Send failed:', err);
-          return of({ success: false });
-        })
-      )
-      .subscribe(res => {
-        if (res.success) {
-          this.newMessage = '';
-          this.loadMessages();
-        }
+      .subscribe({
+        next: (res) => {
+          console.log('Send response:', res);
+          if (res.success) {
+            this.newMessage = '';
+            this.loadMessages();
+          }
+        },
+        error: (err) => console.error('Send failed:', err)
       });
   }
 
@@ -124,21 +139,22 @@ export class ChatModalComponent implements OnInit, OnDestroy, AfterViewChecked {
       const hrs = Math.floor(diff / 3600000);
       const days = Math.floor(diff / 86400000);
 
-      if (isNaN(date.getTime())) return 'Invalid date';
+      if (isNaN(date.getTime())) return 'Invalid';
       if (mins < 1) return 'Just now';
       if (mins < 60) return `${mins}m ago`;
       if (hrs < 24) return `${hrs}h ago`;
       if (days < 7) return `${days}d ago`;
       return date.toLocaleDateString();
     } catch {
-      return 'Invalid date';
+      return 'Invalid';
     }
   }
 
   private scrollToBottom(): void {
+    if (!this.messagesList) return;
     try {
-      const element = this.messagesList.nativeElement;
-      element.scrollTop = element.scrollHeight;
+      const el = this.messagesList.nativeElement;
+      el.scrollTop = el.scrollHeight;
     } catch (err) {}
   }
 }
